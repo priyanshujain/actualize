@@ -4,6 +4,9 @@ import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles } from '@material-ui/core/styles'
 import TodoItem from './TodoItem'
+import { setSchema, getSchema } from '../utils/storage'
+import { Button } from '@material-ui/core'
+import Router from 'next/router'
 
 const useStyles = makeStyles((theme) => ({
 	todo: {
@@ -34,17 +37,21 @@ const useStyles = makeStyles((theme) => ({
 		marginBottom: 0,
 		borderRadius: '0 0 4px 4px',
 	},
+	action: {
+		padding: theme.spacing(2),
+		textAlign: 'right',
+	}
 }))
 
 const Todo = () => {
 	const classes = useStyles()
-	const initialState = [
-		{
-			id: 'vnode',
-			text: 'A simple initial todo',
-			completed: false,
-		},
-	]
+	const initialState = getSchema().map(key => {
+		return {
+			id: key.id,
+			text: key.text,
+			lastUpdated: key.lastUpdated,
+			lastUpdatedDisplay: key.lastUpdatedDisplay,
+		}})
 	const [todos, setTodos] = useState(initialState)
 	const [text, setText] = useState('')
 
@@ -52,22 +59,24 @@ const Todo = () => {
 		const todo = {
 			id: Math.random().toString(36).substring(2),
 			text,
-			completed: false,
+			lastUpdated: new Date().toISOString(),
+			lastUpdatedDisplay: new Date().toLocaleString(),
 		}
 		setTodos([...todos, todo])
+		setSchema([...todos, todo].map(todo => todo))
 	}
 
 	const removeTodo = (todo) => {
 		const filteredTodos = todos.filter((v) => v !== todo)
 		setTodos(filteredTodos)
+		setSchema(filteredTodos.map(todo => todo))
 	}
 
 	const updateTodo = (todo) => {
 		const updatedTodos = todos.map((v) => (v.id === todo.id ? todo : v))
 		setTodos(updatedTodos)
+		setSchema(updatedTodos.map(todo => todo))
 	}
-
-	const completedTodos = todos.filter((todo) => todo.completed)
 
 	const handleAddTodo = (e) => {
 		e.preventDefault()
@@ -81,6 +90,10 @@ const Todo = () => {
 		setText(e.target.value)
 	}
 
+	const routetoHome = () => {
+		Router.push('/')
+	}
+
 	return (
 		<Grid
 			container
@@ -91,7 +104,13 @@ const Todo = () => {
 			<header>
 				<h1 className={classes.srOnly}> Todo App </h1>
 			</header>
+			
 			<Paper className={classes.paper} elevation={3}>
+			<Paper className={classes.action} elevation={3}>
+					<Button variant="contained" color="secondary" onClick={routetoHome}>
+						Home
+					</Button>
+				</Paper>
 				<form onSubmit={handleAddTodo} className={classes.form}>
 					<TextField
 						fullWidth
@@ -104,8 +123,7 @@ const Todo = () => {
 					<button className={classes.srOnly}> Submit Todo </button>
 					{!!todos.length && (
 						<Grid container justify="space-between">
-							<Grid item>Total: {todos.length}</Grid>
-							<Grid item>Completed: {completedTodos.length}</Grid>
+							<Grid item>Total Goals added: {todos.length}</Grid>
 						</Grid>
 					)}
 				</form>
