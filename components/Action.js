@@ -1,13 +1,12 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Fab from '@material-ui/core/Fab'
-import Checkbox from '@material-ui/core/Checkbox'
-import { Typography } from '@material-ui/core'
+import { createTheme } from '@mui/material/styles'
+import Checkbox from '@mui/material/Checkbox'
+import Typography from '@mui/material/Typography'
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme({
 	todoItem: {
 		display: 'flex',
-		padding: theme.spacing(1),
+		padding: 1,
 		opacity: 0,
 		animationName: '$slideDown',
 		animationDuration: '300ms',
@@ -36,20 +35,19 @@ const useStyles = makeStyles((theme) => ({
 	textWithStrike: {
 		textDecoration: 'line-through',
 	},
-}))
+})
 
-const TodoItem = ({ todo, updateTodo, removeTodo, disabled }) => {
-	const classes = useStyles()
+const TodoItem = ({ todo, updateTodo, disabled }) => {
 
 	return (
-		<li className={classes.todoItem}>
+		<li className={theme.todoItem}>
 			<label
 				className={
 					todo.completed
-						? `${classes.textWithStrike} ${classes.text}`
-						: classes.text
+						? `${theme.textWithStrike} ${theme.text}`
+						: theme.text
 				}
-			>
+			> 
 				<Checkbox
 					checked={todo.completed}
 					onChange={() =>

@@ -1,8 +1,8 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import Fab from '@material-ui/core/Fab'
-import Checkbox from '@material-ui/core/Checkbox'
-import { Typography } from '@material-ui/core'
+import { createTheme } from '@mui/material/styles'
+import Fab from '@mui/material/Fab'
+import Checkbox from '@mui/material/Checkbox'
+import Typography from '@mui/material/Typography'
 
 const DeleteIcon = () => (
 	<svg
@@ -16,10 +16,10 @@ const DeleteIcon = () => (
 	</svg>
 )
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme({
 	todoItem: {
 		display: 'flex',
-		padding: theme.spacing(1),
+		padding: 2,
 		opacity: 0,
 		animationName: '$slideDown',
 		animationDuration: '300ms',
@@ -44,19 +44,17 @@ const useStyles = makeStyles((theme) => ({
 		flex: 1,
 		display: 'flex',
 		alignItems: 'center',
-		marginLeft: theme.spacing(1),
+		marginLeft: 1,
 	},
 	textWithStrike: {
 		textDecoration: 'line-through',
 	},
-}))
+})
 
 const TodoItem = ({ todo, updateTodo, removeTodo }) => {
-	const classes = useStyles()
-
 	return (
-		<li className={classes.todoItem}>
-			<div className={classes.text}>
+		<li className={theme.todoItem}>
+			<div className={theme.text}>
 				<Checkbox
 					checked={todo.completed}
 					onChange={() => updateTodo({ ...todo })}

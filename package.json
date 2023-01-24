@@ -1,7 +1,7 @@
 {
-	"name": "next-simple-starter",
+	"name": "leben",
 	"private": true,
-	"version": "3.0.0",
+	"version": "1.0.0",
 	"repository": {
 		"url": "https://github.com/priyanshujain/leben"
 	},
@@ -24,20 +24,21 @@
 		"now-build": "next build"
 	},
 	"dependencies": {
-		"@material-ui/core": "^4.11.4",
-		"next": "^12.2.1",
+		"@emotion/cache": "^11.10.5",
+		"@emotion/react": "^11.10.5",
+		"@emotion/server": "^11.10.0",
+		"@emotion/styled": "^11.10.5",
+		"@mui/material": "^5.11.6",
+		"@next/font": "^13.1.5",
+		"install": "^0.13.0",
+		"next": "13.1.5",
 		"next-offline": "^5.0.5",
-		"react": "^17.0.2",
+		"npm": "^9.3.1",
+		"react": "^18.2.0",
 		"react-axe": "^3.5.4",
-		"react-dom": "^17.0.2"
+		"react-dom": "18.2.0"
 	},
 	"devDependencies": {
-		"babel-eslint": "^10.1.0",
-		"eslint": "^7.26.0",
-		"eslint-config-react-app": "^6.0.0",
-		"eslint-plugin-import": "^2.23.1",
-		"eslint-plugin-jsx-a11y": "^6.4.1",
-		"eslint-plugin-react": "^7.23.2",
-		"eslint-plugin-react-hooks": "^4.2.0"
+		"prettier": "2.8.3"
 	}
 }

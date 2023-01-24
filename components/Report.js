@@ -1,14 +1,13 @@
 import React from 'react'
 import Router from 'next/router'
-import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
-import { makeStyles } from '@material-ui/core/styles'
-import ActionList from './ActionList'
+import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
 import { getData } from '../utils/storage'
-import { Button } from '@material-ui/core'
+import Button from '@mui/material/Button'
 import ReportList from './ReportList'
+import { createTheme } from '@mui/material/styles'
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme({
 	todo: {
 		maxWidth: 400,
 		margin: 'auto',
@@ -29,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 		width: '100%',
 	},
 	form: {
-		padding: theme.spacing(2),
+		padding: 2,
 	},
 	list: {
 		listStyle: 'none',
@@ -38,27 +37,25 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: '0 0 4px 4px',
 	},
 	action: {
-		padding: theme.spacing(2),
+		padding: 2,
 		textAlign: 'right',
 	}
-}))
+})
 
 const routetoHome = () => {
 	Router.push('/')
 }
 
 const Todo = () => {
-	const classes = useStyles()
-
 	return (
 		<Grid
 			container
-			className={classes.todo}
+			className={theme.todo}
 			justify="center"
 			direction="column"
 		>
-			<Paper className={classes.paper} elevation={3}>
-				<Paper className={classes.action} elevation={3}>
+			<Paper className={theme.paper} elevation={3}>
+				<Paper className={theme.action} elevation={3}>
 					<Button variant="contained" color="secondary" onClick={routetoHome}>
 						Home
 					</Button>

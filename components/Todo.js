@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
-import Paper from '@material-ui/core/Paper'
-import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid'
-import { makeStyles } from '@material-ui/core/styles'
+import Grid from '@mui/material/Grid'
+import Paper from '@mui/material/Paper'
+import TextField from '@mui/material/TextField'
+import { createTheme } from '@mui/material/styles'
 import TodoItem from './TodoItem'
 import { setSchema, getSchema } from '../utils/storage'
-import { Button } from '@material-ui/core'
+import Button  from '@mui/material/Button'
 import Router from 'next/router'
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme({
 	todo: {
 		maxWidth: 400,
 		margin: 'auto',
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 		width: '100%',
 	},
 	form: {
-		padding: theme.spacing(2),
+		padding: 2,
 	},
 	list: {
 		listStyle: 'none',
@@ -38,13 +38,12 @@ const useStyles = makeStyles((theme) => ({
 		borderRadius: '0 0 4px 4px',
 	},
 	action: {
-		padding: theme.spacing(2),
+		padding: 2,
 		textAlign: 'right',
 	}
-}))
+})
 
 const Todo = () => {
-	const classes = useStyles()
 	const initialState = getSchema().map(key => {
 		return {
 			id: key.id,
@@ -97,21 +96,21 @@ const Todo = () => {
 	return (
 		<Grid
 			container
-			className={classes.todo}
+			className={theme.todo}
 			justify="center"
 			direction="column"
 		>
 			<header>
-				<h1 className={classes.srOnly}> Todo App </h1>
+				<h1 className={theme.srOnly}> Todo App </h1>
 			</header>
 			
-			<Paper className={classes.paper} elevation={3}>
-			<Paper className={classes.action} elevation={3}>
+			<Paper className={theme.paper} elevation={3}>
+			<Paper className={theme.action} elevation={3}>
 					<Button variant="contained" color="secondary" onClick={routetoHome}>
 						Home
 					</Button>
 				</Paper>
-				<form onSubmit={handleAddTodo} className={classes.form}>
+				<form onSubmit={handleAddTodo} className={theme.form}>
 					<TextField
 						fullWidth
 						value={text}
@@ -120,14 +119,14 @@ const Todo = () => {
 						onChange={handleTextChange}
 						inputProps={{ 'aria-label': 'What must be done?' }}
 					/>
-					<button className={classes.srOnly}> Submit Todo </button>
+					<button className={theme.srOnly}> Submit Todo </button>
 					{!!todos.length && (
 						<Grid container justify="space-between">
 							<Grid item>Total Goals added: {todos.length}</Grid>
 						</Grid>
 					)}
 				</form>
-				<ul className={classes.list}>
+				<ul className={theme.list}>
 					{todos.map((todo) => (
 						<TodoItem
 							key={todo.id}

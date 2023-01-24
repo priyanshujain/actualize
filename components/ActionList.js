@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
-import { makeStyles } from '@material-ui/core/styles'
+import Paper from '@mui/material/Paper'
+import Grid from '@mui/material/Grid'
+import { createTheme } from '@mui/material/styles'
 import TodoItem from './Action'
 import { setLatestData } from '../utils/storage'
 
-const useStyles = makeStyles((theme) => ({
+const theme = createTheme({
 	todo: {
 		maxWidth: 400,
 		margin: 'auto',
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 		width: '100%',
 	},
 	form: {
-		padding: theme.spacing(2),
+		padding: 2,
 	},
 	list: {
 		listStyle: 'none',
@@ -34,10 +34,9 @@ const useStyles = makeStyles((theme) => ({
 		marginBottom: 0,
 		borderRadius: '0 0 4px 4px',
 	},
-}))
+})
 
 const Todo = ({data}) => {
-	const classes = useStyles()
 	const initialState = data['tasks'].map(key => {
 		return {
 			id: key.id,
@@ -57,15 +56,15 @@ const Todo = ({data}) => {
 	return (
 		<Grid
 			container
-			className={classes.todo}
+			className={theme.todo}
 			justify="center"
 			direction="column"
 		>
 			<header>
-				<h1 className={classes.srOnly}> Todo App </h1>
+				<h1 className={theme.srOnly}> Todo App </h1>
 			</header>
-			<Paper className={classes.paper} elevation={3}>
-				<ul className={classes.list}>
+			<Paper className={theme.paper} elevation={3}>
+				<ul className={theme.list}>
 					{todos.map((todo) => (
 						<TodoItem
 							key={todo.id}
