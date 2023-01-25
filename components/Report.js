@@ -33,9 +33,15 @@ const Todo = () => {
 			justify="center"
 			direction="column"
 		>
-			<Paper sx={{...styles.paper}} elevation={3}>
+			<div style={{...styles.paper}}>
+				<h1
+				style={{textAlign: "center", paddingLeft: "20px", fontWeight: "400", marginBottom: "0px"}}
+				>📝 Past Report</h1>
+				<p
+				style={{marginTop: "5px", textAlign: "center", padding: "0 20px", fontWeight: "400"}}
+				>Congratulations! you are making progress. <i>Habits are the compound interest of self-improvement.</i></p>
 				<ReportList data={getData()} />
-			</Paper>
+			</div>
 		</Grid>
 		</main>
 	);

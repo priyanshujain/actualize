@@ -3,12 +3,12 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import TodoItem from "./Action";
 import theme from "../src/theme";
+import moment from "moment";
 
 const styles = {
 	todo: {
 		maxWidth: 400,
 		margin: "auto",
-		marginTop: theme.spacing(5),
 		textAlign: "center",
 	},
 	logo: {
@@ -53,12 +53,12 @@ const Todo = ({ data }) => {
 			<header>
 				<h1 style={{...styles.srOnly}}> Report </h1>
 			</header>
-			<Paper sx={{...styles.paper}} elevation={3}>
+			<div sx={{...styles.paper}}>
 				<ul style={{...styles.list}}>
 					{initialState.map((todo) => (
-						<div>
+						<div style={{marginTop: "40px"}}>
 							<h2 style={{ marginTop: "10px" }}>
-								{new Date(todo.day).toLocaleDateString()}
+								{moment(new Date(todo.day)).format('ddd, Do MMM')}
 							</h2>
 							<ul style={{...styles.list}}>
 								{todo.tasks.map((task) => (
@@ -73,7 +73,7 @@ const Todo = ({ data }) => {
 						</div>
 					))}
 				</ul>
-			</Paper>
+			</div>
 		</Grid>
 	);
 };

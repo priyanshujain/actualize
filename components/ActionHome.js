@@ -35,10 +35,13 @@ const ActionHome = () => {
 			justify="center"
 			direction="column"
 		>
-			<Paper style={{...styles.paper}} elevation={3}>
-				<h1>{moment().format('ddd Do, MMM YYYY')}</h1>
+			<div style={{...styles.paper}}>
+				<h2>{moment().format('ddd, Do MMM')}</h2>
+				<p
+				style={{marginTop: "5px", textAlign: "center", padding: "0 20px", fontWeight: "400"}}
+				><i>“Every action you take is a vote for the person you wish to become”</i><br /> - James Clear</p>
 				<ActionList data={getLatestData()} />
-			</Paper>
+			</div>
 		</Grid>
 		</main>
 		

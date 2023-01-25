@@ -7,7 +7,7 @@ import theme from "../src/theme";
 const styles = {
 	todoItem: {
 		display: "flex",
-		padding: theme.spacing(1),
+		padding: theme.spacing(1.5),
 		animationName: "$slideDown",
 		animationDuration: "300ms",
 		animationFillMode: "forwards",
@@ -29,50 +29,50 @@ const styles = {
 
 const TodoItem = ({ todo, updateTodo, disabled }) => {
 	return (
-		<li style={{...styles.todoItem}}>
-			<label
-				style={
-					todo.completed
-						? {...styles.textWithStrike, ...styles.text}
-						: {...styles.text}
-				}
-			>
-				<Checkbox
-					checked={todo.completed}
-					onChange={() =>
-						updateTodo({
-							...todo,
-							completed: !todo.completed,
-							lastUpdated: new Date().toISOString(),
-							lastUpdatedDisplay: new Date().toLocaleString(),
-						})
+		<li style={{ ...styles.todoItem }}>
+				<label
+					style={
+						todo.completed && !disabled
+							? { ...styles.textWithStrike, ...styles.text }
+							: { ...styles.text }
 					}
-					disabled={disabled}
-					color="secondary"
-				/>
-				<div style={{ paddingTop: "4px", paddingBottom: "4px" }}>
-					<Typography
-						variant="h6"
-						display="block"
-						style={{
-							color: "black",
-							textAlign: "left",
-							paddingRight: "10px",
-						}}
-					>
-						{todo.text}
-					</Typography>
-					{todo.lastUpdated && (
+				>
+					<Checkbox
+						checked={todo.completed}
+						onChange={() =>
+							updateTodo({
+								...todo,
+								completed: !todo.completed,
+								lastUpdated: new Date().toISOString(),
+								lastUpdatedDisplay: new Date().toLocaleString(),
+							})
+						}
+						disabled={disabled}
+						color="secondary"
+					/>
+					<div style={{ paddingTop: "4px", paddingBottom: "4px" }}>
 						<Typography
-							variant="span"
+							variant="h6"
 							display="block"
-							style={{ color: "black", textAlign: "left" }}
+							style={{
+								color: "black",
+								textAlign: "left",
+								paddingRight: "10px",
+							}}
 						>
-							Last Updated: {todo.lastUpdatedDisplay}
+							{todo.text}
 						</Typography>
-					)}
-				</div>
-			</label>
+						{todo.lastUpdated && (
+							<Typography
+								variant="span"
+								display="block"
+								style={{ color: "black", textAlign: "left" }}
+							>
+								Last Updated: {todo.lastUpdatedDisplay}
+							</Typography>
+						)}
+					</div>
+				</label>
 		</li>
 	);
 };

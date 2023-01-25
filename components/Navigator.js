@@ -23,10 +23,15 @@ const routetoReport = () => {
 
 const categories = [
   {
-    id: '',
+    id: 'Habit',
     children: [
-      { id: 'Edit Goals', icon: <SettingsEthernetIcon />, action: routetoSchema },
+      { id: 'Edit Daily Goals', icon: <SettingsEthernetIcon />, action: routetoSchema },
       { id: 'Report', icon: <DnsRoundedIcon /> , action: routetoReport },
+    ],
+  },
+  {
+    id: 'Settings',
+    children: [
       { id: 'Download Backup', icon: <BackupIcon />, action: downloadData },
     ],
   },
@@ -48,13 +53,13 @@ const itemCategory = {
 };
 
 export default function Navigator(props) {
-  const { ...other } = props;
+  const { onDrawerToggle, ...other } = props;
 
   return (
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
         <ListItem sx={{ ...item, ...itemCategory, fontSize: 22, color: '#fff' }}>
-          Hey There!
+        👋 Hey There!
         </ListItem>
         <ListItemButton sx={{ ...item, ...itemCategory }} onClick={() => Router.push('/')} >
           <ListItemIcon>
@@ -69,7 +74,7 @@ export default function Navigator(props) {
             </ListItem>
             {children.map(({ id: childId, icon, active, action }) => (
               <ListItem disablePadding key={childId}>
-                <ListItemButton selected={active} sx={item} onClick={action}>
+                <ListItemButton selected={active} sx={item} onClick={() => {action(); props.onDrawerToggle(); }}>
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText>{childId}</ListItemText>
                 </ListItemButton>

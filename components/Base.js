@@ -142,12 +142,14 @@ export default function Base() {
               variant="temporary"
               open={mobileOpen}
               onClose={handleDrawerToggle}
+              onDrawerToggle={handleDrawerToggle}
             />
           )}
 
           <Navigator
             PaperProps={{ style: { width: drawerWidth } }}
             sx={{ display: { sm: 'block', xs: 'none' } }}
+            onDrawerToggle={handleDrawerToggle}
           />
         </Box>
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>

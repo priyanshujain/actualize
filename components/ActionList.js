@@ -48,7 +48,7 @@ const Todo = ({ data }) => {
 			justify="center"
 			direction="column"
 		>
-			<Paper sx={{...styles.paper}} elevation={3}>
+			<div style={{...styles.paper}}>
 				<ul style={{...styles.list}}>
 					{todos.map((todo) => (
 						<TodoItem
@@ -59,7 +59,7 @@ const Todo = ({ data }) => {
 						/>
 					))}
 				</ul>
-			</Paper>
+			</div>
 		</Grid>
 	);
 };

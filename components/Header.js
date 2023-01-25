@@ -29,13 +29,9 @@ function Header(props) {
             </Grid>
             <Grid item xs />
             <Grid item>
-            </Grid>
-            <Grid item>
-              <Tooltip title="Alerts • No alerts">
                 <IconButton color="inherit">
                   <Replay onClick={() => window.location.reload()} />
                 </IconButton>
-              </Tooltip>
             </Grid>
           </Grid>
         </Toolbar>

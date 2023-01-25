@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import Router from "next/router";
 import theme from "../src/theme";
 import Base from "./Base";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const styles = {
 	todo: {
@@ -21,6 +22,8 @@ const styles = {
 	},
 	form: {
 		padding: theme.spacing(2),
+		paddingTop: 0,
+		textAlign: "right",
 	},
 	list: {
 		listStyle: "none",
@@ -32,6 +35,13 @@ const styles = {
 		padding: theme.spacing(2),
 		textAlign: "right",
 	},
+	submitButton : {
+		width: "50px",
+		height: "50px",
+		borderRadius: "50%",
+		border: 0,
+		backgroundColor: theme.palette.primary.main,
+	}
 };
 
 const Todo = () => {
@@ -87,39 +97,54 @@ const Todo = () => {
 		<main>
 			<Base />
 			<Grid
-			container
-			sx={{...styles.todo}}
-			justify="center"
-			direction="column"
-		>
-			<Paper sx={{...styles.paper}} elevation={3}>
-				<form onSubmit={handleAddTodo} style={{...styles.form}}>
-					<TextField
-						fullWidth
-						value={text}
-						margin="normal"
-						label="What must be done?"
-						onChange={handleTextChange}
-						inputProps={{ "aria-label": "What must be done?" }}
-					/>
-					{!!todos.length && (
-						<Grid container justify="space-between">
-							<Grid item>Total Goals added: {todos.length}</Grid>
-						</Grid>
-					)}
-				</form>
-				<ul style={{...styles.list}}>
-					{todos.map((todo) => (
-						<TodoItem
-							key={todo.id}
-							todo={todo}
-							updateTodo={updateTodo}
-							removeTodo={removeTodo}
+				container
+				sx={{ ...styles.todo }}
+				justify="center"
+				direction="column"
+			>
+				<div style={{ ...styles.paper }}>
+					<h1
+					style={{textAlign: "left", paddingLeft: "20px", fontWeight: "400"}}
+					>Daily Goals</h1>
+					<p
+				style={{marginTop: "0px", textAlign: "left", padding: "0 20px", fontWeight: "400"}}
+				><i>“with better habits, anything is possible”</i></p>
+					<form onSubmit={handleAddTodo} style={{ ...styles.form }}>
+						<TextField
+							fullWidth
+							value={text}
+							sx={{ display: "block" }}
+							margin="normal"
+							label="What must be done?"
+							onChange={handleTextChange}
+							inputProps={{ "aria-label": "What must be done?" }}
 						/>
-					))}
-				</ul>
-			</Paper>
-		</Grid>
+						{!!todos.length && (
+							<Grid container justify="space-between">
+								<Grid item>
+									Total Goals added: {todos.length}
+								</Grid>
+							</Grid>
+						)}
+						
+						<button type="submit" style={{... styles.submitButton}}>
+							<ArrowForwardIcon htmlColor="#fff" />
+						</button>
+						
+					</form>
+					
+					<ul style={{ ...styles.list }}>
+						{todos.map((todo) => (
+							<TodoItem
+								key={todo.id}
+								todo={todo}
+								updateTodo={updateTodo}
+								removeTodo={removeTodo}
+							/>
+						))}
+					</ul>
+				</div>
+			</Grid>
 		</main>
 	);
 };
