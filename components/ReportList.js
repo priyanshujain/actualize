@@ -33,7 +33,7 @@ const styles = {
 };
 
 const Todo = ({ data }) => {
-	const initialState = Object.keys(data["events"]).map((key) => {
+	const initialState = Object.keys(data["events"]).reverse().map((key) => {
 		return {
 			day: key,
 			tasks: data["events"][key]["tasks"],
