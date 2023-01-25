@@ -35,13 +35,13 @@ const styles = {
 		padding: theme.spacing(2),
 		textAlign: "right",
 	},
-	submitButton : {
+	submitButton: {
 		width: "50px",
 		height: "50px",
 		borderRadius: "50%",
 		border: 0,
 		backgroundColor: theme.palette.primary.main,
-	}
+	},
 };
 
 const Todo = () => {
@@ -104,11 +104,24 @@ const Todo = () => {
 			>
 				<div style={{ ...styles.paper }}>
 					<h1
-					style={{textAlign: "left", paddingLeft: "20px", fontWeight: "400"}}
-					>Daily Goals</h1>
+						style={{
+							textAlign: "left",
+							paddingLeft: "20px",
+							fontWeight: "400",
+						}}
+					>
+						Daily Goals
+					</h1>
 					<p
-				style={{marginTop: "0px", textAlign: "left", padding: "0 20px", fontWeight: "400"}}
-				><i>“with better habits, anything is possible”</i></p>
+						style={{
+							marginTop: "0px",
+							textAlign: "left",
+							padding: "0 20px",
+							fontWeight: "400",
+						}}
+					>
+						<i>“with better habits, anything is possible”</i>
+					</p>
 					<form onSubmit={handleAddTodo} style={{ ...styles.form }}>
 						<TextField
 							fullWidth
@@ -126,13 +139,15 @@ const Todo = () => {
 								</Grid>
 							</Grid>
 						)}
-						
-						<button type="submit" style={{... styles.submitButton}}>
+
+						<button
+							type="submit"
+							style={{ ...styles.submitButton }}
+						>
 							<ArrowForwardIcon htmlColor="#fff" />
 						</button>
-						
 					</form>
-					
+
 					<ul style={{ ...styles.list }}>
 						{todos.map((todo) => (
 							<TodoItem

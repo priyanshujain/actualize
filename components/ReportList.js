@@ -33,34 +33,38 @@ const styles = {
 };
 
 const Todo = ({ data }) => {
-	const initialState = Object.keys(data["events"]).reverse().map((key) => {
-		return {
-			day: key,
-			tasks: data["events"][key]["tasks"],
-			lastUpdated: data["events"][key]["lastUpdated"],
-			lastUpdatedDisplay: data["events"][key]["lastUpdatedDisplay"],
-		};
-	});
+	const initialState = Object.keys(data["events"])
+		.reverse()
+		.map((key) => {
+			return {
+				day: key,
+				tasks: data["events"][key]["tasks"],
+				lastUpdated: data["events"][key]["lastUpdated"],
+				lastUpdatedDisplay: data["events"][key]["lastUpdatedDisplay"],
+			};
+		});
 	console.log(initialState);
 
 	return (
 		<Grid
 			container
-			sx={{...styles.todo}}
+			sx={{ ...styles.todo }}
 			justify="center"
 			direction="column"
 		>
 			<header>
-				<h1 style={{...styles.srOnly}}> Report </h1>
+				<h1 style={{ ...styles.srOnly }}> Report </h1>
 			</header>
-			<div sx={{...styles.paper}}>
-				<ul style={{...styles.list}}>
+			<div sx={{ ...styles.paper }}>
+				<ul style={{ ...styles.list }}>
 					{initialState.map((todo) => (
-						<div style={{marginTop: "40px"}}>
+						<div style={{ marginTop: "40px" }}>
 							<h2 style={{ marginTop: "10px" }}>
-								{moment(new Date(todo.day)).format('ddd, Do MMM')}
+								{moment(new Date(todo.day)).format(
+									"ddd, Do MMM"
+								)}
 							</h2>
-							<ul style={{...styles.list}}>
+							<ul style={{ ...styles.list }}>
 								{todo.tasks.map((task) => (
 									<TodoItem
 										key={task.id}

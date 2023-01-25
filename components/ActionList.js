@@ -44,12 +44,12 @@ const Todo = ({ data }) => {
 	return (
 		<Grid
 			container
-			sx={{...styles.todo}}
+			sx={{ ...styles.todo }}
 			justify="center"
 			direction="column"
 		>
-			<div style={{...styles.paper}}>
-				<ul style={{...styles.list}}>
+			<div style={{ ...styles.paper }}>
+				<ul style={{ ...styles.list }}>
 					{todos.map((todo) => (
 						<TodoItem
 							key={todo.id}

@@ -28,21 +28,39 @@ const Todo = () => {
 		<main>
 			<Base />
 			<Grid
-			container
-			sx={{...styles.todo}}
-			justify="center"
-			direction="column"
-		>
-			<div style={{...styles.paper}}>
-				<h1
-				style={{textAlign: "center", paddingLeft: "20px", fontWeight: "400", marginBottom: "0px"}}
-				>📝 Past Report</h1>
-				<p
-				style={{marginTop: "5px", textAlign: "center", padding: "0 20px", fontWeight: "400"}}
-				>Congratulations! you are making progress. <i>Habits are the compound interest of self-improvement.</i></p>
-				<ReportList data={getData()} />
-			</div>
-		</Grid>
+				container
+				sx={{ ...styles.todo }}
+				justify="center"
+				direction="column"
+			>
+				<div style={{ ...styles.paper }}>
+					<h1
+						style={{
+							textAlign: "center",
+							paddingLeft: "20px",
+							fontWeight: "400",
+							marginBottom: "0px",
+						}}
+					>
+						📝 Past Report
+					</h1>
+					<p
+						style={{
+							marginTop: "5px",
+							textAlign: "center",
+							padding: "0 20px",
+							fontWeight: "400",
+						}}
+					>
+						Congratulations! you are making progress.{" "}
+						<i>
+							Habits are the compound interest of
+							self-improvement.
+						</i>
+					</p>
+					<ReportList data={getData()} />
+				</div>
+			</Grid>
 		</main>
 	);
 };

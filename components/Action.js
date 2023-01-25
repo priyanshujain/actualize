@@ -31,49 +31,54 @@ const styles = {
 const TodoItem = ({ todo, updateTodo, disabled }) => {
 	return (
 		<li style={{ ...styles.todoItem }}>
-				<label
-					style={
-						todo.completed && !disabled
-							? { ...styles.textWithStrike, ...styles.text }
-							: { ...styles.text }
+			<label
+				style={
+					todo.completed && !disabled
+						? { ...styles.textWithStrike, ...styles.text }
+						: { ...styles.text }
+				}
+			>
+				<Checkbox
+					checked={todo.completed}
+					onChange={() =>
+						updateTodo({
+							...todo,
+							completed: !todo.completed,
+							lastUpdated: new Date().toISOString(),
+							lastUpdatedDisplay: new Date().toLocaleString(),
+						})
 					}
-				>
-					<Checkbox
-						checked={todo.completed}
-						onChange={() =>
-							updateTodo({
-								...todo,
-								completed: !todo.completed,
-								lastUpdated: new Date().toISOString(),
-								lastUpdatedDisplay: new Date().toLocaleString(),
-							})
-						}
-						disabled={disabled}
-						color="secondary"
-					/>
-					<div style={{ paddingTop: "4px", paddingBottom: "4px" }}>
+					disabled={disabled}
+					color="secondary"
+				/>
+				<div style={{ paddingTop: "4px", paddingBottom: "4px" }}>
+					<Typography
+						variant="h6"
+						display="block"
+						style={{
+							color: "black",
+							textAlign: "left",
+							paddingRight: "10px",
+						}}
+					>
+						{todo.text}
+					</Typography>
+					{todo.lastUpdated && (
 						<Typography
-							variant="h6"
+							variant="span"
 							display="block"
-							style={{
-								color: "black",
-								textAlign: "left",
-								paddingRight: "10px",
-							}}
+							style={{ color: "black", textAlign: "left" }}
 						>
-							{todo.text}
+							Last Updated:{" "}
+							{disabled
+								? moment().format("MMM Do YYYY, h:mm a")
+								: moment(new Date(todo.lastUpdated)).format(
+										"h:mm a"
+								  )}
 						</Typography>
-						{todo.lastUpdated && (
-							<Typography
-								variant="span"
-								display="block"
-								style={{ color: "black", textAlign: "left" }}
-							>
-								Last Updated: {disabled ? moment().format('MMM Do YYYY, h:mm a') : moment(new Date(todo.lastUpdated)).format('h:mm a')}
-							</Typography>
-						)}
-					</div>
-				</label>
+					)}
+				</div>
+			</label>
 		</li>
 	);
 };

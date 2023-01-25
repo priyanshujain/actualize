@@ -4,7 +4,7 @@ import Fab from "@mui/material/Fab";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import theme from "../src/theme";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import moment from "moment";
 
 const styles = {
@@ -44,8 +44,8 @@ const styles = {
 
 const TodoItem = ({ todo, updateTodo, removeTodo }) => {
 	return (
-		<li style={{...styles.todoItem}}>
-			<div style={{...styles.text}}>
+		<li style={{ ...styles.todoItem }}>
+			<div style={{ ...styles.text }}>
 				<Checkbox
 					checked={todo.completed}
 					onChange={() => updateTodo({ ...todo })}
@@ -71,7 +71,10 @@ const TodoItem = ({ todo, updateTodo, removeTodo }) => {
 						display="block"
 						style={{ color: "black", textAlign: "left" }}
 					>
-						Added on: {moment(new Date(todo.lastUpdated)).format("MMM Do, YYYY hh:mm a")}
+						Added on:{" "}
+						{moment(new Date(todo.lastUpdated)).format(
+							"MMM Do, YYYY hh:mm a"
+						)}
 					</Typography>
 				</div>
 			</div>
