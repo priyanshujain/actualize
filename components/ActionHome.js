@@ -26,6 +26,7 @@ const styles = {
 };
 
 const ActionHome = () => {
+	const data = getLatestData();
 	return (
 		<main>
 			<Base />
@@ -40,7 +41,23 @@ const ActionHome = () => {
 				<p
 				style={{marginTop: "5px", textAlign: "center", padding: "0 20px", fontWeight: "400"}}
 				><i>“Every action you take is a vote for the person you wish to become”</i><br /> - James Clear</p>
-				<ActionList data={getLatestData()} />
+				{
+					data["tasks"].length === 0 ? (
+						<div style={{ textAlign: "center", marginTop: "60px"}}>
+							<Button
+								variant="outlined"
+								size="large"
+								style={{textTransform: "none", fontSize: "18px", fontWeight: "400", borderWidth: "2px", borderColor: '#16463F'}}
+								onClick={() => {
+									Router.push("/goals");
+								}}
+								>
+									Add Your First Daily Goal 🎯
+							</Button>
+						</div>
+					) : null
+				}
+				<ActionList data={data} />
 			</div>
 		</Grid>
 		</main>
