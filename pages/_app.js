@@ -22,7 +22,7 @@ const MyApp = ({ Component, pageProps }) => {
 	return (
 		<>
 			<Head>
-				<title>Todo App</title>
+				<title>Leben</title>
 				<meta
 					name="viewport"
 					content="width=device-width, initial-scale=1.0"

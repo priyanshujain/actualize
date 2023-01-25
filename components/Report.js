@@ -6,6 +6,7 @@ import { getData } from "../utils/storage";
 import Button from "@mui/material/Button";
 import ReportList from "./ReportList";
 import theme from "../src/theme";
+import Base from "./Base";
 
 const styles = {
 	todo: {
@@ -22,31 +23,21 @@ const styles = {
 	},
 };
 
-const routetoHome = () => {
-	Router.push("/");
-};
-
 const Todo = () => {
 	return (
-		<Grid
+		<main>
+			<Base />
+			<Grid
 			container
 			sx={{...styles.todo}}
 			justify="center"
 			direction="column"
 		>
 			<Paper sx={{...styles.paper}} elevation={3}>
-				<Paper sx={{...styles.action}} elevation={3}>
-					<Button
-						variant="contained"
-						color="secondary"
-						onClick={routetoHome}
-					>
-						Home
-					</Button>
-				</Paper>
 				<ReportList data={getData()} />
 			</Paper>
 		</Grid>
+		</main>
 	);
 };
 

@@ -6,6 +6,8 @@ import ActionList from "./ActionList";
 import { getLatestData, downloadData } from "../utils/storage";
 import Button from "@mui/material/Button";
 import theme from "../src/theme";
+import Base from "./Base";
+import moment from "moment";
 
 const styles = {
 	todo: {
@@ -23,51 +25,23 @@ const styles = {
 	},
 };
 
-const routetoSchema = () => {
-	Router.push("/schema");
-};
-const routetoReport = () => {
-	Router.push("/report");
-};
-
 const ActionHome = () => {
 	return (
-		<Grid
+		<main>
+			<Base />
+			<Grid
 			container
 			style={{...styles.todo}}
 			justify="center"
 			direction="column"
 		>
 			<Paper style={{...styles.paper}} elevation={3}>
-				<Paper style={{...styles.action}} elevation={3}>
-					<Button
-						variant="outlined"
-						color="secondary"
-						onClick={routetoReport}
-						style={{ marginRight: "10px" }}
-					>
-						Report
-					</Button>
-					<Button
-						variant="outlined"
-						color="secondary"
-						onClick={downloadData}
-						style={{ marginRight: "10px" }}
-					>
-						Download
-					</Button>
-					<Button
-						variant="contained"
-						color="secondary"
-						onClick={routetoSchema}
-					>
-						Edit Goals
-					</Button>
-				</Paper>
-				<h1>{new Date().toLocaleDateString()}</h1>
+				<h1>{moment().format('ddd Do, MMM YYYY')}</h1>
 				<ActionList data={getLatestData()} />
 			</Paper>
 		</Grid>
+		</main>
+		
 	);
 };
 

@@ -8,6 +8,7 @@ import { setSchema, getSchema } from "../utils/storage";
 import Button from "@mui/material/Button";
 import Router from "next/router";
 import theme from "../src/theme";
+import Base from "./Base";
 
 const styles = {
 	todo: {
@@ -82,27 +83,16 @@ const Todo = () => {
 		setText(e.target.value);
 	};
 
-	const routetoHome = () => {
-		Router.push("/");
-	};
-
 	return (
-		<Grid
+		<main>
+			<Base />
+			<Grid
 			container
 			sx={{...styles.todo}}
 			justify="center"
 			direction="column"
 		>
 			<Paper sx={{...styles.paper}} elevation={3}>
-				<Paper sx={{...styles.action}} elevation={3}>
-					<Button
-						variant="contained"
-						color="secondary"
-						onClick={routetoHome}
-					>
-						Home
-					</Button>
-				</Paper>
 				<form onSubmit={handleAddTodo} style={{...styles.form}}>
 					<TextField
 						fullWidth
@@ -130,6 +120,7 @@ const Todo = () => {
 				</ul>
 			</Paper>
 		</Grid>
+		</main>
 	);
 };
 

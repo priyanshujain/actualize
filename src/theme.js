@@ -27,6 +27,26 @@ const theme = createTheme({
 	},
 	typography: {
 		fontFamily: inter.style.fontFamily,
+		h5: {
+			fontWeight: 500,
+			fontSize: 26,
+			letterSpacing: 0.5,
+		},
+	},
+	shape: {
+		borderRadius: 8,
+	},
+	components: {
+		MuiTab: {
+			defaultProps: {
+				disableRipple: true,
+			},
+		},
+	},
+	mixins: {
+		toolbar: {
+			minHeight: 48,
+		},
 	},
 });
 
