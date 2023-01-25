@@ -1,25 +1,25 @@
 language: node_js
 
 os:
-  - linux
+    - linux
 
 dist:
-  - trusty
+    - trusty
 
 node_js:
-  - '10'
-  - '12'
+    - "10"
+    - "12"
 
 install:
-  - npm install
+    - npm install
 
 branches:
-  only:
-    - main
+    only:
+        - main
 
 script:
-  - npm run build
+    - npm run build
 
 cache:
-  directories:
-    - node_modules
+    directories:
+        - node_modules

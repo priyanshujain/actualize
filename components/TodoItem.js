@@ -1,87 +1,100 @@
-import React from 'react'
-import { createTheme } from '@mui/material/styles'
-import Fab from '@mui/material/Fab'
-import Checkbox from '@mui/material/Checkbox'
-import Typography from '@mui/material/Typography'
+import React from "react";
+import { createTheme } from "@mui/material/styles";
+import Fab from "@mui/material/Fab";
+import Checkbox from "@mui/material/Checkbox";
+import Typography from "@mui/material/Typography";
+import theme from "../src/theme";
 
 const DeleteIcon = () => (
 	<svg
 		className="MuiSvgIcon-root"
-		focusable="false"
-		viewBox="0 0 24 24"
+		focusable="true"
+		viewBox="-6 -6 36 36"
 		aria-hidden="true"
 		role="presentation"
 	>
 		<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
 	</svg>
-)
+);
 
-const theme = createTheme({
+const styles = {
 	todoItem: {
-		display: 'flex',
-		padding: 2,
-		opacity: 0,
-		animationName: '$slideDown',
-		animationDuration: '300ms',
-		animationFillMode: 'forwards',
-		animationDelay: '0s',
-		animationTimingFunction: 'cubic-bezier(0.1, 0.23, 0.23, 1.44)',
-		'&:nth-child(even)': {
-			background: '#EEF6FF',
+		display: "flex",
+		padding: theme.spacing(2),
+		// opacity: 0,
+		animationName: "$slideDown",
+		animationDuration: "300ms",
+		animationFillMode: "forwards",
+		animationDelay: "0s",
+		animationTimingFunction: "cubic-bezier(0.1, 0.23, 0.23, 1.44)",
+		"&:nth-child(even)": {
+			background: "#EEF6FF",
 		},
 	},
-	'@keyframes slideDown': {
+	"@keyframes slideDown": {
 		from: {
 			opacity: 0,
-			transform: 'translateY(-10px)',
+			transform: "translateY(-10px)",
 		},
 		to: {
 			opacity: 1,
-			transform: 'translateY(0px)',
+			transform: "translateY(0px)",
 		},
 	},
 	text: {
 		flex: 1,
-		display: 'flex',
-		alignItems: 'center',
+		display: "flex",
+		alignItems: "center",
 		marginLeft: 1,
 	},
 	textWithStrike: {
-		textDecoration: 'line-through',
+		textDecoration: "line-through",
 	},
-})
+};
 
 const TodoItem = ({ todo, updateTodo, removeTodo }) => {
 	return (
-		<li className={theme.todoItem}>
-			<div className={theme.text}>
+		<li style={{...styles.todoItem}}>
+			<div style={{...styles.text}}>
 				<Checkbox
 					checked={todo.completed}
 					onChange={() => updateTodo({ ...todo })}
 					color="primary"
 					disabled={true}
-					style={{ display: 'none'}}
+					style={{ display: "none" }}
 				/>
-				
+
 				<div>
-				<Typography variant="h6" display="block" style={{ color: 'black', textAlign: "left", paddingRight: "10px" }}>
-					{todo.text}
-				</Typography>
-				<Typography variant="span" display="block"  style={{ color: 'black', textAlign: "left" }}>
-					Added on: {todo.lastUpdatedDisplay}
-				</Typography>
+					<Typography
+						variant="h6"
+						display="block"
+						style={{
+							color: "black",
+							textAlign: "left",
+							paddingRight: "10px",
+						}}
+					>
+						{todo.text}
+					</Typography>
+					<Typography
+						variant="span"
+						display="block"
+						style={{ color: "black", textAlign: "left" }}
+					>
+						Added on: {todo.lastUpdatedDisplay}
+					</Typography>
 				</div>
 			</div>
 			<Fab
 				aria-label="Delete Todo"
 				onClick={() => removeTodo(todo)}
-				color="secondary"
+				color="#fff"
 				size="small"
 			>
 				<DeleteIcon />
 			</Fab>
 		</li>
-	)
-}
+	);
+};
 
-export default TodoItem
+export default TodoItem;

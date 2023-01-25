@@ -1,14 +1,14 @@
-const withOffline = require('next-offline')
+const withOffline = require("next-offline");
 
 module.exports = withOffline({
 	workboxOpts: {
-		swDest: 'static/service-worker.js',
+		swDest: "static/service-worker.js",
 		runtimeCaching: [
 			{
 				urlPattern: /[.](png|jpg|ico|css)/,
-				handler: 'CacheFirst',
+				handler: "CacheFirst",
 				options: {
-					cacheName: 'assets-cache',
+					cacheName: "assets-cache",
 					cacheableResponse: {
 						statuses: [0, 200],
 					},
@@ -16,11 +16,11 @@ module.exports = withOffline({
 			},
 			{
 				urlPattern: /^http.*/,
-				handler: 'NetworkFirst',
+				handler: "NetworkFirst",
 				options: {
-					cacheName: 'http-cache',
+					cacheName: "http-cache",
 				},
 			},
 		],
 	},
-})
+});
