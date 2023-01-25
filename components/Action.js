@@ -3,6 +3,7 @@ import { createTheme } from "@mui/material/styles";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import theme from "../src/theme";
+import moment from "moment";
 
 const styles = {
 	todoItem: {
@@ -68,7 +69,7 @@ const TodoItem = ({ todo, updateTodo, disabled }) => {
 								display="block"
 								style={{ color: "black", textAlign: "left" }}
 							>
-								Last Updated: {todo.lastUpdatedDisplay}
+								Last Updated: {disabled ? moment().format('MMM Do YYYY, h:mm a') : moment(new Date(todo.lastUpdated)).format('h:mm a')}
 							</Typography>
 						)}
 					</div>

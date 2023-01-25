@@ -5,7 +5,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import theme from "../src/theme";
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import moment from "moment";
 
 const styles = {
 	todoItem: {
@@ -71,7 +71,7 @@ const TodoItem = ({ todo, updateTodo, removeTodo }) => {
 						display="block"
 						style={{ color: "black", textAlign: "left" }}
 					>
-						Added on: {todo.lastUpdatedDisplay}
+						Added on: {moment(new Date(todo.lastUpdated)).format("MMM Do, YYYY hh:mm a")}
 					</Typography>
 				</div>
 			</div>
