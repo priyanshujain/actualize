@@ -12,6 +12,7 @@ const styles = {
 	todo: {
 		maxWidth: 480,
 		margin: "auto",
+		marginBottom: "100px",
 		textAlign: "center",
 	},
 	paper: {
@@ -42,7 +43,7 @@ const Todo = () => {
 							marginBottom: "0px",
 						}}
 					>
-						📝 Past Report
+						Past Report 📝
 					</h1>
 					<p
 						style={{

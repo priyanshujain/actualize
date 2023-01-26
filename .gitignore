@@ -3,3 +3,10 @@ static/sw.js
 .next
 out
 *-error.log
+
+# Local Netlify folder
+.netlify
+
+.DS_Store
+*/.DS_Store
+.DS_Store?

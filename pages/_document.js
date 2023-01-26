@@ -1,13 +1,12 @@
 import React from "react";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import createEmotionServer from "@emotion/server/create-instance";
-import { inter } from "../src/theme";
 import createEmotionCache from "../src/createEmotionCache";
 
 class MyDocument extends Document {
 	render() {
 		return (
-			<Html lang="en-GB" className={inter.className}>
+			<Html lang="en-GB">
 				<Head>
 					<meta name="theme-color" content="#16463F" />
 					<meta

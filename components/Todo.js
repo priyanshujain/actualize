@@ -16,6 +16,7 @@ const styles = {
 		maxWidth: 480,
 		margin: "auto",
 		textAlign: "center",
+		marginBottom: "100px",
 	},
 	paper: {
 		width: "100%",

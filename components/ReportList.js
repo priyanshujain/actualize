@@ -59,11 +59,19 @@ const Todo = ({ data }) => {
 				<ul style={{ ...styles.list }}>
 					{initialState.map((todo) => (
 						<div style={{ marginTop: "40px" }}>
-							<h2 style={{ marginTop: "10px" }}>
+							<h2 style={{ margin: "10px 0 0 0", fontWeight: 500 }}>
 								{moment(new Date(todo.day)).format(
 									"ddd, Do MMM"
 								)}
 							</h2>
+							<p
+			style={{
+				textAlign: "center",
+				marginLeft: "20px",
+				marginBottom: "20px",
+				marginTop: 0,
+			}}
+			>{`(${parseInt(todo.tasks.filter((todo) => todo.completed === true).length*100/todo.tasks.length)}% completed)`}</p>
 							<ul style={{ ...styles.list }}>
 								{todo.tasks.map((task) => (
 									<TodoItem
