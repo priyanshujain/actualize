@@ -176,6 +176,7 @@ class MyDocument extends Document {
 					/>
 				</Head>
 				<body>
+					<script src="https://apis.google.com/js/api.js"></script>
 					<Main />
 					<NextScript />
 				</body>

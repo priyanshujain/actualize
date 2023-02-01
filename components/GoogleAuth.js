@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
-import { createTheme } from "@mui/material/styles";
-import TodoItem from "./TodoItem";
-import { setSchema, getSchema } from "../utils/storage";
-import Button from "@mui/material/Button";
-import Router from "next/router";
 import theme from "../src/theme";
-import Base from "./Base";
 import google from "../lib/google";
+import CircularProgress from "@mui/material/CircularProgress";
+import Router from "next/router";
 
 const styles = {
 	todo: {
@@ -45,40 +39,45 @@ const styles = {
 	},
 };
 
-const Todo = () => {
-	const [isAuthAvailable, setIsAuthAvailable] = useState();
+const GoogleAuth = () => {
+	const [code, setCode] = useState(0);
 
+	// Similar to componentDidMount and componentDidUpdate:
 	useEffect(() => {
-		const checkAuth = async () => {
-			await google.auth.isAuthAvailable().then((isAuth) => {
-				setIsAuthAvailable(isAuth);
-			});
-		};
-		checkAuth();
-	});
+		// Update the document title using the browser API
+		// var router = useRouter();
 
-	const openAuthUrl = () => {
-		const authUrl = google.auth.getGoogleAuthURL();
-		window.open(authUrl, "_self");
-	};
+		// console.log("router.query", router.query);
+		let params = new URLSearchParams(window.location.search);
+		let codeVal = params.get("code");
+		setCode(codeVal);
+		if (!code) {
+			try {
+				google.auth.getTokenFromCode(codeVal).then((res) => {
+					if (res && res.accessToken) {
+						Router.push("/backup");
+					}
+				});
+			} catch (error) {
+				console.log("error", error);
+			}
+		}
+	});
 
 	return (
 		<main>
-			<Base />
 			<Grid
 				container
 				sx={{ ...styles.todo }}
 				justify="center"
 				direction="column"
 			>
-				<div style={{ marginTop: "50px" }}>
-					<Button variant="contained" onClick={openAuthUrl}>
-						Backup to google drive
-					</Button>
+				<div style={{ minHeight: "100vh", marginTop: "50vh" }}>
+					<CircularProgress />
 				</div>
 			</Grid>
 		</main>
 	);
 };
 
-export default Todo;
+export default GoogleAuth;
