@@ -1,6 +1,7 @@
 import React from "react";
 import dayjs from "dayjs";
 import { getSettingsData } from "./settings";
+import { renameKey } from "../helpers";
 
 function getData() {
 	return getDataLocalStorage();
@@ -104,6 +105,8 @@ function getLatestData() {
 		isExists = true;
 	} else if (data["events"].hasOwnProperty(oldDate)) {
 		isExists = true;
+		renameKey(data["events"], oldDate, date);
+		setData(data);
 		date = oldDate;
 	}
 	if (!isExists) {
