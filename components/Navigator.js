@@ -11,6 +11,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import DnsRoundedIcon from "@mui/icons-material/DnsRounded";
 import BackupIcon from "@mui/icons-material/Backup";
 import SettingsEthernetIcon from "@mui/icons-material/SettingsEthernet";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { downloadData } from "../utils/storage";
 import Router from "next/router";
 
@@ -19,6 +20,10 @@ const routetoSchema = () => {
 };
 const routetoReport = () => {
 	Router.push("/report");
+};
+
+const routeToSettings = () => {
+	Router.push("/settings");
 };
 
 const categories = [
@@ -40,6 +45,11 @@ const categories = [
 				id: "Download Backup",
 				icon: <BackupIcon />,
 				action: downloadData,
+			},
+			{
+				id: "App Settings",
+				icon: <SettingsIcon />,
+				action: routeToSettings,
 			},
 		],
 	},

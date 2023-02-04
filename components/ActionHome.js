@@ -3,11 +3,15 @@ import Router from "next/router";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import ActionList from "./ActionList";
-import { getLatestData, downloadData } from "../utils/storage";
+import { getLatestData, getCurrentDate } from "../utils/storage";
 import Button from "@mui/material/Button";
 import theme from "../src/theme";
 import Base from "./Base";
-import moment from "moment";
+import dayjs from "dayjs";
+import { getSettingsData } from "../utils/storage";
+
+var advancedFormat = require("dayjs/plugin/advancedFormat");
+dayjs.extend(advancedFormat);
 
 const styles = {
 	todo: {
@@ -27,6 +31,7 @@ const styles = {
 
 const ActionHome = () => {
 	const data = getLatestData();
+	const settings = getSettingsData();
 	return (
 		<main>
 			<Base />
@@ -37,7 +42,11 @@ const ActionHome = () => {
 				direction="column"
 			>
 				<div style={{ ...styles.paper }}>
-					<h2 style={{fontWeight: 500, fontSize: "24px"}}>{moment().format("ddd, Do MMM")}</h2>
+					<h2 style={{ fontWeight: 500, fontSize: "24px" }}>
+						{dayjs()
+							.add(-settings.dayStartTime.hours, "hour")
+							.format("ddd, Do MMM")}
+					</h2>
 					<p
 						style={{
 							marginTop: "5px",
@@ -72,11 +81,9 @@ const ActionHome = () => {
 							</Button>
 						</div>
 					) : null}
-					{
-						data && data.tasks && data.tasks.length > 0 ? (
-							<ActionList data={data} />
-						) : null
-					}
+					{data && data.tasks && data.tasks.length > 0 ? (
+						<ActionList data={data} />
+					) : null}
 				</div>
 			</Grid>
 		</main>
