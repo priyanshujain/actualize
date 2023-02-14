@@ -52,6 +52,7 @@ const Todo = () => {
 			text: key.text,
 			lastUpdated: key.lastUpdated,
 			lastUpdatedDisplay: key.lastUpdatedDisplay,
+			updated: key.updated,
 		};
 	});
 	const [todos, setTodos] = useState(initialState);
