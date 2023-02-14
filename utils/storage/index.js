@@ -148,12 +148,12 @@ function getLatestData() {
 
 function setLatestData(data) {
 	var db = getData();
-	let date = getLatestDate();
+	let date = getCurrentDate();
 	const oldDate = getOldCurrentDate();
 	let isExists = false;
-	if (data["events"].hasOwnProperty(date)) {
+	if (db["events"].hasOwnProperty(date)) {
 		isExists = true;
-	} else if (data["events"].hasOwnProperty(oldDate)) {
+	} else if (db["events"].hasOwnProperty(oldDate)) {
 		isExists = true;
 		date = oldDate;
 	}

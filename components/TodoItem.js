@@ -17,7 +17,7 @@ const styles = {
 		animationFillMode: "forwards",
 		animationDelay: "0s",
 		animationTimingFunction: "cubic-bezier(0.1, 0.23, 0.23, 1.44)",
-		"&:nth-child(even)": {
+		"&:nthChild(even)": {
 			background: "#EEF6FF",
 		},
 	},
