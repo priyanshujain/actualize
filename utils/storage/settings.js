@@ -1,8 +1,14 @@
 export function getSettingsData() {
 	var data = window.localStorage.getItem("_settings");
+	const defaultData = getDefaultSettings();
 	if (data) {
 		data = decodeURIComponent(escape(window.atob(data)));
 		data = JSON.parse(data);
+		for (let key in defaultData) {
+			if (data[key] === undefined) {
+				data[key] = defaultData[key];
+			}
+		}
 	} else {
 		data = getDefaultSettings();
 	}
@@ -20,6 +26,21 @@ function getDefaultSettings() {
 			hours: 0,
 			minutes: 0,
 		},
+		locationId: "home",
+		locations: [
+			{
+				id: "home",
+				name: "Home",
+				lat: 0,
+				lng: 0,
+				locationString: "",
+				city: "",
+				country: "",
+				timezone: "",
+				state: "",
+				postalCode: "",			},
+		],
+		theme: "light",
 	};
 	return settings;
 }
