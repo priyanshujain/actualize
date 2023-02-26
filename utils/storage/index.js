@@ -11,7 +11,6 @@ function setData(updatedData) {
 	return setDataLocalStorage(updatedData);
 }
 
-
 function getDataLocalStorage() {
 	var data = window.localStorage.getItem("db");
 	if (data) {

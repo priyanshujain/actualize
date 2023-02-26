@@ -27,6 +27,21 @@ function getCurrentDate() {
 	return `${year}-${monthStr}-${dayStr}`;
 }
 
+function getLastSleepDate() {
+	const settings = getSettingsData();
+	const date = dayjs()
+		.add(-1, "day")
+		.add(-settings.dayStartTime.hours, "hour")
+		.add(-settings.dayStartTime.minutes, "minute");
+	const year = date.year();
+	const month = date.month() + 1;
+	const day = date.date();
+
+	const monthStr = month < 10 ? `0${month}` : month;
+	const dayStr = day < 10 ? `0${day}` : day;
+	return `${year}-${monthStr}-${dayStr}`;
+}
+
 function getOldCurrentDate() {
 	const settings = getSettingsData();
 	const date = dayjs()
@@ -40,8 +55,4 @@ function getOldCurrentDate() {
 	return `${year}-${monthStr}-${day}`;
 }
 
-export {
-    getLatestDate,
-    getCurrentDate,
-    getOldCurrentDate,
-}
+export { getLatestDate, getCurrentDate, getOldCurrentDate, getLastSleepDate };

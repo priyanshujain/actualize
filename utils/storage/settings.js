@@ -1,3 +1,5 @@
+const allFeatures = ["habit", "sleep"];
+
 export function getSettingsData() {
 	var data = window.localStorage.getItem("_settings");
 	const defaultData = getDefaultSettings();
@@ -26,6 +28,10 @@ function getDefaultSettings() {
 			hours: 0,
 			minutes: 0,
 		},
+		dayEndTime: {
+			hours: 0,
+			minutes: 0,
+		},
 		locationId: "home",
 		locations: [
 			{
@@ -38,9 +44,29 @@ function getDefaultSettings() {
 				country: "",
 				timezone: "",
 				state: "",
-				postalCode: "",			},
+				postalCode: "",
+			},
 		],
 		theme: "light",
+		features: ["habit", "sleep"],
 	};
 	return settings;
+}
+
+export function getFeatures() {
+	const data = getSettingsData()["features"];
+	let featureData = {};
+	allFeatures.map((feature) => {
+		featureData[feature] = false;
+	});
+	data.map((feature) => {
+		featureData[feature] = true;
+	});
+	return featureData;
+}
+
+export function getMandatoryFeatures() {
+	return {
+		settings: true,
+	};
 }

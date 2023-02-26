@@ -1,5 +1,7 @@
 import React from "react";
-import { getCurrentDate } from "./date";
+import dayjs from "dayjs";
+import { getLastSleepDate, getCurrentDate } from "./date";
+import { getSettingsData } from "./settings";
 
 export function getSleepData() {
 	var data = window.localStorage.getItem("_sleep");
@@ -48,10 +50,14 @@ export function getSleepSchema() {
 		startTime: {
 			hours: 0,
 			minutes: 0,
+			timeIso: "",
+			isRecorded: false,
 		},
 		endTime: {
 			hours: 0,
 			minutes: 0,
+			timeIso: "",
+			isRecorded: false,
 		},
 		duration: 0,
 		lastUpdated: "",
@@ -59,7 +65,7 @@ export function getSleepSchema() {
 		wakeUPMood: "",
 		notes: "",
 		alarmUsed: false,
-		sleepQuality: "",
+		sleepQuality: "good",
 		awakeDuringNight: false,
 		sleepAidUsed: false,
 		sleepAidType: "",
@@ -112,8 +118,25 @@ export function getSleepSchema() {
 }
 
 export function getLastSleepData() {
+	const date = getLastSleepDate();
+	var data = getSleepData();
+
+	const defaultData = getSleepSchema();
+
+	let isExists = false;
+	if (data["events"].hasOwnProperty(date)) {
+		isExists = true;
+	}
+	if (!isExists) {
+		data["events"][date] = defaultData;
+		return data["events"][date];
+	}
+	return data["events"][date];
+}
+
+export function getCurrentSleepData() {
 	const date = getCurrentDate();
-	const data = getSleepData();
+	var data = getSleepData();
 
 	const defaultData = getSleepSchema();
 
@@ -129,8 +152,106 @@ export function getLastSleepData() {
 }
 
 export function setLastSleepData(data) {
-	const date = getCurrentDate();
-	const sleepData = getSleepData();
+	const date = getLastSleepDate();
+	var sleepData = getSleepData();
+	data["lastUpdated"] = new Date().toISOString();
 	sleepData["events"][date] = data;
 	setSleepData(sleepData);
+}
+
+export function setCurrentSleepData(data) {
+	const date = getCurrentSleepData();
+	var sleepData = getSleepData();
+	data["lastUpdated"] = new Date().toISOString();
+	sleepData["events"][date] = data;
+	setSleepData(sleepData);
+}
+
+export function setDefaultLastSleepData() {
+	const date = getLastSleepDate();
+	var data = getSleepData();
+	if (data["events"].hasOwnProperty(date)) {
+		return;
+	}
+	const sleepData = getLastSleepData();
+	setLastSleepData(sleepData);
+}
+
+export function getSleepSettingData() {
+	let data = getSleepData()["setting"];
+	let defaultSettingData = getDefaultSleepData()["setting"];
+	for (let key in defaultSettingData) {
+		if (data[key] === undefined) {
+			data[key] = defaultData[key];
+		}
+	}
+	return data;
+}
+
+export function setSleepSettingData(data) {
+	let sleepData = getSleepData();
+	sleepData["setting"] = data;
+	setSleepData(sleepData);
+}
+
+export function setSleepNow() {
+	let sleepData = getCurrentSleepData();
+	const dt = dayjs();
+	sleepData.startTime.timeIso = dt.format();
+	sleepData.startTime.isRecorded = true;
+	sleepData.startTime.hours = dt.hour();
+	sleepData.startTime.minutes = dt.minute();
+	setCurrentSleepData(sleepData);
+}
+
+export function setSleepAuto() {
+	const settings = getSettingsData();
+	if (
+		dayjs() >
+		dayjs()
+			.startOf("day")
+			.add(settings.dayEndTime.hours, "hour")
+			.add(settings.dayEndTime.minutes, "minute")
+	) {
+		let sleepData = getCurrentSleepData();
+		const dt = dayjs();
+		sleepData.startTime.timeIso = dt.format();
+		sleepData.startTime.hours = dt.hour();
+		sleepData.startTime.minutes = dt.minute();
+		setCurrentSleepData(sleepData);
+	}
+}
+
+export function setWakeUpAuto() {
+	const sleepSetting = getSleepSettingData();
+	if (
+		dayjs() >
+		dayjs()
+			.startOf("day")
+			.add(sleepSetting.sleepStartTime.hours, "hour")
+			.add(sleepSetting.sleepStartTime.minutes, "minute")
+	) {
+		const settings = getSettingsData();
+		let sleepData = getCurrentSleepData();
+		const isLastDay =
+			dayjs() >
+			dayjs()
+				.startOf("day")
+				.add(settings.dayStartTime.hours, "hour")
+				.add(settings.dayStartTime.minutes, "minute");
+
+		if (isLastDay) {
+			sleepData = getLastSleepData();
+		}
+		const dt = dayjs();
+		sleepData.startTime.timeIso = dt.format();
+		sleepData.startTime.isRecorded = true;
+		sleepData.startTime.hours = dt.hour();
+		sleepData.startTime.minutes = dt.minute();
+		if (isLastDay) {
+			setLastSleepData(sleepData);
+		} else {
+			setCurrentSleepData(sleepData);
+		}
+	}
 }
