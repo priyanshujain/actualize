@@ -3,15 +3,12 @@ import Router from "next/router";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import ActionList from "./ActionList";
-import { getLatestData, getCurrentDate } from "../utils/storage";
+import { getLatestData, getCurrentDateString } from "../utils/storage";
 import Button from "@mui/material/Button";
 import theme from "../src/theme";
 import Base from "./Base";
 import dayjs from "dayjs";
 import { getSettingsData } from "../utils/storage";
-
-var advancedFormat = require("dayjs/plugin/advancedFormat");
-dayjs.extend(advancedFormat);
 
 const styles = {
 	todo: {
