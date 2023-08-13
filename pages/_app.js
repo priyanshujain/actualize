@@ -12,7 +12,9 @@ import {
 import dayjs from "dayjs";
 
 var advancedFormat = require("dayjs/plugin/advancedFormat");
+var duration = require("dayjs/plugin/duration");
 dayjs.extend(advancedFormat);
+dayjs.extend(duration);
 
 const MyApp = ({ Component, pageProps }) => {
 	useEffect(() => {
@@ -34,7 +36,7 @@ const MyApp = ({ Component, pageProps }) => {
 	return (
 		<>
 			<Head>
-				<title>Leben</title>
+				<title>Actualize</title>
 				<meta
 					name="viewport"
 					content="width=device-width, initial-scale=1.0"

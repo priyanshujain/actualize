@@ -11,7 +11,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import HistoryIcon from "@mui/icons-material/History";
 import BackupIcon from "@mui/icons-material/Backup";
 import SettingsEthernetIcon from "@mui/icons-material/SettingsEthernet";
-import SettingsIcon from "@mui/icons-material/Settings";
+import ScheduleIcon from '@mui/icons-material/Schedule';
 import PieChartIcon from "@mui/icons-material/PieChart";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
 import ContrastIcon from "@mui/icons-material/Contrast";
@@ -56,29 +56,22 @@ const categories = [
 					Router.push("/sleep-metrics");
 				},
 			},
-			{
-				id: "Sleep Goals",
-				icon: <ContrastIcon />,
-				action: () => {
-					Router.push("/sleep-goals");
-				},
-			},
 		],
 	},
 	{
 		id: "settings",
 		children: [
 			{
-				id: "Download Backup",
-				icon: <BackupIcon />,
-				action: downloadData,
-			},
-			{
-				id: "App Settings",
-				icon: <SettingsIcon />,
+				id: "Daily Schedule",
+				icon: <ScheduleIcon />,
 				action: () => {
 					Router.push("/settings");
 				},
+			},
+			{
+				id: "Download Backup",
+				icon: <BackupIcon />,
+				action: downloadData,
 			},
 		],
 	},

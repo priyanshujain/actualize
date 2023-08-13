@@ -1,7 +1,10 @@
 import React from "react";
 import dayjs from "dayjs";
-import { getLastSleepDate, getCurrentDate } from "./date";
-import { getSettingsData } from "./settings";
+import {
+	getLastSleepDateString,
+	getCurrentDateString,
+	getCurrentDate,
+} from "./date";
 
 export function getSleepData() {
 	var data = window.localStorage.getItem("_sleep");
@@ -23,7 +26,7 @@ function getDefaultSleepData() {
 	const sleep = {
 		setting: {
 			sleepStartTime: {
-				hours: 11,
+				hours: 23,
 				minutes: 0,
 			},
 			sleepEndTime: {
@@ -59,7 +62,10 @@ export function getSleepSchema() {
 			timeIso: "",
 			isRecorded: false,
 		},
-		duration: 0,
+		duration: {
+			hours: 0,
+			minutes: 0,
+		},
 		lastUpdated: "",
 		sleepMood: "",
 		wakeUPMood: "",
@@ -114,11 +120,12 @@ export function getSleepSchema() {
 		isForgetful: false,
 		isDistracted: false,
 		isRecorded: false,
+		isSleepHoursTargetMet: false,
 	};
 }
 
 export function getLastSleepData() {
-	const date = getLastSleepDate();
+	const date = getLastSleepDateString();
 	var data = getSleepData();
 
 	const defaultData = getSleepSchema();
@@ -135,7 +142,7 @@ export function getLastSleepData() {
 }
 
 export function getCurrentSleepData() {
-	const date = getCurrentDate();
+	const date = getCurrentDateString();
 	var data = getSleepData();
 
 	const defaultData = getSleepSchema();
@@ -152,7 +159,7 @@ export function getCurrentSleepData() {
 }
 
 export function setLastSleepData(data) {
-	const date = getLastSleepDate();
+	const date = getLastSleepDateString();
 	var sleepData = getSleepData();
 	data["lastUpdated"] = new Date().toISOString();
 	sleepData["events"][date] = data;
@@ -160,7 +167,7 @@ export function setLastSleepData(data) {
 }
 
 export function setCurrentSleepData(data) {
-	const date = getCurrentSleepData();
+	const date = getCurrentDateString();
 	var sleepData = getSleepData();
 	data["lastUpdated"] = new Date().toISOString();
 	sleepData["events"][date] = data;
@@ -168,7 +175,7 @@ export function setCurrentSleepData(data) {
 }
 
 export function setDefaultLastSleepData() {
-	const date = getLastSleepDate();
+	const date = getLastSleepDateString();
 	var data = getSleepData();
 	if (data["events"].hasOwnProperty(date)) {
 		return;
@@ -204,16 +211,37 @@ export function setSleepNow() {
 	setCurrentSleepData(sleepData);
 }
 
-export function setSleepAuto() {
-	const settings = getSettingsData();
-	if (
-		dayjs() >
-		dayjs()
+function doesDateChange() {
+	const settings = getSleepSettingData();
+	const dt = dayjs();
+	return (
+		dt
 			.startOf("day")
-			.add(settings.dayEndTime.hours, "hour")
-			.add(settings.dayEndTime.minutes, "minute")
-	) {
+			.add(settings.sleepStartTime.hours, "hour")
+			.add(settings.sleepStartTime.minutes, "minute") >
+		dt
+			.startOf("day")
+			.add(settings.sleepEndTime.hours, "hour")
+			.add(settings.sleepEndTime.minutes, "minute")
+	);
+}
+
+export function setSleepAuto() {
+	const settings = getSleepSettingData();
+	const sleepTime = getCurrentDate()
+		.add(settings.sleepStartTime.hours, "hour")
+		.add(settings.sleepStartTime.minutes, "minute");
+	let wakeUpTime = getCurrentDate()
+		.add(settings.sleepEndTime.hours, "hour")
+		.add(settings.sleepEndTime.minutes, "minute");
+	if (doesDateChange()) {
+		wakeUpTime = wakeUpTime.add(1, "day");
+	}
+	if (dayjs() > sleepTime) {
 		let sleepData = getCurrentSleepData();
+		if (dayjs() >= wakeUpTime) {
+			return;
+		}
 		const dt = dayjs();
 		sleepData.startTime.timeIso = dt.format();
 		sleepData.startTime.hours = dt.hour();
@@ -223,35 +251,42 @@ export function setSleepAuto() {
 }
 
 export function setWakeUpAuto() {
-	const sleepSetting = getSleepSettingData();
+	const settings = getSleepSettingData();
+	const sleepTime = getCurrentDate()
+		.add(settings.sleepStartTime.hours, "hour")
+		.add(settings.sleepStartTime.minutes, "minute");
+	let wakeUpTime = getCurrentDate()
+		.add(settings.sleepEndTime.hours, "hour")
+		.add(settings.sleepEndTime.minutes, "minute");
+	if (doesDateChange()) {
+		wakeUpTime = wakeUpTime.add(1, "day");
+	}
+	const nextSleepTime = sleepTime.add(1, "day");
 	if (
-		dayjs() >
-		dayjs()
-			.startOf("day")
-			.add(sleepSetting.sleepStartTime.hours, "hour")
-			.add(sleepSetting.sleepStartTime.minutes, "minute")
+		dayjs() <
+		nextSleepTime
 	) {
-		const settings = getSettingsData();
-		let sleepData = getCurrentSleepData();
-		const isLastDay =
-			dayjs() >
-			dayjs()
-				.startOf("day")
-				.add(settings.dayStartTime.hours, "hour")
-				.add(settings.dayStartTime.minutes, "minute");
+		const sleepData = getLastSleepData();
+		if (sleepData.endTime.isRecorded) {
+			return;
+		}
+		if (!sleepData.startTime.isRecorded) {
+			sleepData.startTime.hours = sleepTime.hour();
+			sleepData.startTime.minutes = sleepTime.minute();
+			sleepData.startTime.timeIso = sleepTime.format();
+			sleepData.startTime.isRecorded = true;
+		}
 
-		if (isLastDay) {
-			sleepData = getLastSleepData();
-		}
 		const dt = dayjs();
-		sleepData.startTime.timeIso = dt.format();
-		sleepData.startTime.isRecorded = true;
-		sleepData.startTime.hours = dt.hour();
-		sleepData.startTime.minutes = dt.minute();
-		if (isLastDay) {
-			setLastSleepData(sleepData);
-		} else {
-			setCurrentSleepData(sleepData);
-		}
+		sleepData.endTime.timeIso = dt.format();
+		sleepData.endTime.isRecorded = true;
+		sleepData.endTime.hours = dt.hour();
+		sleepData.endTime.minutes = dt.minute();
+		let endDt = dayjs(sleepData.endTime.timeIso);
+		let startDt = dayjs(sleepData.startTime.timeIso);
+		sleepData.duration.hours = endDt.diff(startDt, "hour");
+		endDt = endDt.subtract(sleepData.duration.hours, "hour");
+		sleepData.duration.minutes = endDt.diff(startDt, "minute");
+		setLastSleepData(sleepData);
 	}
 }

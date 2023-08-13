@@ -6,12 +6,13 @@ import dayjs from "dayjs";
 import { getSettingsData } from "../../utils/storage";
 import {
 	getLastSleepData,
-	setLastSleepData,
+	getCurrentSleepData,
 	getSleepSettingData,
 	setSleepNow,
 } from "../../utils/storage/sleep";
 import { Button } from "@mui/material";
 import { capitalize } from "../../utils/helpers";
+import UpdateSleep from "./UpdateSleep";
 
 const styles = {
 	grid: {
@@ -29,10 +30,14 @@ const PageContent = () => {
 	const settings = getSettingsData();
 	const sleepSetting = getSleepSettingData();
 	const lastSleepData = getLastSleepData();
+	const sleepData = getCurrentSleepData();
 
 	const handleSleepNow = () => {
 		setSleepNow();
 	};
+
+	const [open, setOpen] = useState(false);
+	const [ lastSleepDetails, setLastSleepDetails ] = useState(lastSleepData);
 
 	return (
 		<main>
@@ -105,11 +110,11 @@ const PageContent = () => {
 									{dayjs()
 										.startOf("day")
 										.add(
-											sleepSetting.sleepStartTime.hours,
+											sleepSetting?.sleepStartTime?.hours,
 											"hour"
 										)
 										.add(
-											sleepSetting.sleepStartTime.minutes,
+											sleepSetting?.sleepStartTime?.minutes,
 											"minute"
 										)
 										.format("h:mm A")}
@@ -129,9 +134,9 @@ const PageContent = () => {
 										marginTop: 0,
 									}}
 								>
-									{`${sleepSetting.sleepDuration.hours} h ${
-										sleepSetting.sleepDuration.minutes
-											? `${sleepSetting.sleepDuration.minutes} m`
+									{`${sleepSetting?.sleepDuration?.hours} h ${
+										sleepSetting?.sleepDuration?.minutes
+											? `${sleepSetting?.sleepDuration?.minutes} m`
 											: ""
 									}`}
 								</p>
@@ -140,14 +145,20 @@ const PageContent = () => {
 					</div>
 
 					<Button
-						variant="contained"
+						variant={
+							sleepData.startTime.isRecorded
+								? "outlined"
+								: "contained"
+						}
 						style={{
 							width: "100%",
 							marginTop: "16px",
 						}}
 						onClick={handleSleepNow}
 					>
-						I am Gonna Sleep Now
+						{sleepData.startTime.isRecorded
+							? "Sleeping now 🛌🏻 💤💤💤"
+							: "I am Gonna Sleep Now"}
 					</Button>
 
 					<div>
@@ -159,6 +170,17 @@ const PageContent = () => {
 						>
 							Last Night
 						</h3>
+						<p
+							style={{
+								marginTop: "0",
+								fontStyle: "italic",
+								color: "red",
+							}}
+						>
+							{!lastSleepDetails?.isRecorded
+								? "(This is automated recorded data please verify once)"
+								: ""}
+						</p>
 						<div
 							style={{
 								display: "flex",
@@ -185,11 +207,11 @@ const PageContent = () => {
 									{dayjs()
 										.startOf("day")
 										.add(
-											sleepSetting.sleepStartTime.hours,
+											lastSleepDetails?.startTime?.hours,
 											"hour"
 										)
 										.add(
-											sleepSetting.sleepStartTime.minutes,
+											lastSleepDetails?.startTime?.minutes,
 											"minute"
 										)
 										.format("h:mm A")}
@@ -212,11 +234,11 @@ const PageContent = () => {
 									{dayjs()
 										.startOf("day")
 										.add(
-											sleepSetting.sleepEndTime.hours,
+											lastSleepDetails?.endTime?.hours,
 											"hour"
 										)
 										.add(
-											sleepSetting.sleepEndTime.minutes,
+											lastSleepDetails?.endTime?.minutes,
 											"minute"
 										)
 										.format("h:mm A")}
@@ -246,9 +268,9 @@ const PageContent = () => {
 										marginTop: "0px",
 									}}
 								>
-									{`${sleepSetting.sleepDuration.hours} h ${
-										sleepSetting.sleepDuration.minutes
-											? `${sleepSetting.sleepDuration.minutes} m`
+									{`${lastSleepDetails?.duration?.hours} h ${
+										lastSleepDetails?.duration?.minutes
+											? `${lastSleepDetails?.duration?.minutes} m`
 											: ""
 									}`}
 								</p>
@@ -279,10 +301,16 @@ const PageContent = () => {
 							width: "100%",
 							marginTop: "16px",
 						}}
-						onClick={handleSleepNow}
+						onClick={() => setOpen(true)}
 					>
 						UPDATE
 					</Button>
+					<UpdateSleep
+						open={open}
+						handleClose={() => setOpen(false)}
+						sleepData={lastSleepData}
+						updateLastSleepData={data => setLastSleepDetails(data)}
+					/>
 				</div>
 			</Grid>
 		</main>

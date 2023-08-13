@@ -112,7 +112,7 @@ const Todo = () => {
 							fontWeight: "400",
 						}}
 					>
-						Daily Goals
+						Daily Habits
 					</h1>
 					<p
 						style={{
@@ -137,7 +137,7 @@ const Todo = () => {
 						{!!todos.length && (
 							<Grid container justify="space-between">
 								<Grid item>
-									Total Goals added: {todos.length}
+									Total habits added: {todos.length}
 								</Grid>
 							</Grid>
 						)}

@@ -1,7 +1,7 @@
 import React from "react";
 import { getSettingsData } from "./settings";
 import { renameKey } from "../helpers";
-import { getLatestDate, getOldCurrentDate, getCurrentDate } from "./date";
+import { getLatestDate, getOldCurrentDate, getCurrentDateString } from "./date";
 
 function getData() {
 	return getDataLocalStorage();
@@ -50,8 +50,7 @@ function setSchema(tasks) {
 
 function getLatestData() {
 	var data = getData();
-	let date = getCurrentDate();
-	const oldDate = getOldCurrentDate();
+	let date = getCurrentDateString();
 
 	const defaultData = getSchema().map((key) => {
 		return {
@@ -65,11 +64,6 @@ function getLatestData() {
 	let isExists = false;
 	if (data["events"].hasOwnProperty(date)) {
 		isExists = true;
-	} else if (data["events"].hasOwnProperty(oldDate)) {
-		isExists = true;
-		renameKey(data["events"], oldDate, date);
-		setData(data);
-		date = oldDate;
 	}
 	if (!isExists) {
 		data["events"][date] = {};
@@ -110,14 +104,10 @@ function getLatestData() {
 
 function setLatestData(data) {
 	var db = getData();
-	let date = getCurrentDate();
-	const oldDate = getOldCurrentDate();
+	let date = getCurrentDateString();
 	let isExists = false;
 	if (db["events"].hasOwnProperty(date)) {
 		isExists = true;
-	} else if (db["events"].hasOwnProperty(oldDate)) {
-		isExists = true;
-		date = oldDate;
 	}
 	data["lastUpdated"] = new Date().toISOString();
 	data["lastUpdatedDisplay"] = new Date().toLocaleString();
@@ -132,7 +122,7 @@ function setLatestData(data) {
 
 function downloadData() {
 	const data = JSON.stringify(getData(), null, 4);
-	const filename = "leben-backup.json";
+	const filename = "actualize-backup.json";
 	var file = new Blob([data], { type: "application/json" });
 	if (window.navigator.msSaveOrOpenBlob)
 		// IE10+
@@ -161,5 +151,5 @@ export {
 	downloadData,
 	getData,
 	getSettingsData,
-	getCurrentDate,
+	getCurrentDateString,
 };
