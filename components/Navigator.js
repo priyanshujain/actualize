@@ -8,48 +8,83 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
-import DnsRoundedIcon from "@mui/icons-material/DnsRounded";
+import HistoryIcon from "@mui/icons-material/History";
 import BackupIcon from "@mui/icons-material/Backup";
 import SettingsEthernetIcon from "@mui/icons-material/SettingsEthernet";
-import SettingsIcon from "@mui/icons-material/Settings";
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import PieChartIcon from "@mui/icons-material/PieChart";
+import BedtimeIcon from "@mui/icons-material/Bedtime";
+import ContrastIcon from "@mui/icons-material/Contrast";
+import ContactSupportIcon from '@mui/icons-material/ContactSupport';
 import { downloadData } from "../utils/storage";
+import { getFeatures, getMandatoryFeatures } from "../utils/storage/settings";
 import Router from "next/router";
-
-const routetoSchema = () => {
-	Router.push("/goals");
-};
-const routetoReport = () => {
-	Router.push("/report");
-};
-
-const routeToSettings = () => {
-	Router.push("/settings");
-};
 
 const categories = [
 	{
-		id: "Habit",
+		id: "habit",
 		children: [
 			{
-				id: "Edit Daily Goals",
+				id: "Edit Daily Habits",
 				icon: <SettingsEthernetIcon />,
-				action: routetoSchema,
+				action: () => {
+					Router.push("/goals");
+				},
 			},
-			{ id: "Report", icon: <DnsRoundedIcon />, action: routetoReport },
+			{
+				id: "History",
+				icon: <HistoryIcon />,
+				action: () => {
+					Router.push("/history");
+				},
+			},
 		],
 	},
 	{
-		id: "Settings",
+		id: "sleep",
 		children: [
+			{
+				id: "Tracker",
+				icon: <BedtimeIcon />,
+				action: () => {
+					Router.push("/sleep-tracker");
+				},
+			},
+			{
+				id: "Statistics",
+				icon: <PieChartIcon />,
+				action: () => {
+					Router.push("/sleep-metrics");
+				},
+			},
+		],
+	},
+	{
+		id: "settings",
+		children: [
+			{
+				id: "Daily Schedule",
+				icon: <ScheduleIcon />,
+				action: () => {
+					Router.push("/settings");
+				},
+			},
 			{
 				id: "Download Backup",
 				icon: <BackupIcon />,
 				action: downloadData,
 			},
+		],
+	},
+	{
+		id: "support",
+		children: [
 			{
-				id: "App Settings",
-				icon: <SettingsIcon />,
-				action: routeToSettings,
+				id: "Contact Us",
+				icon: <ContactSupportIcon />,
+				action: () => {
+					Router.push("/support");
+				},
 			},
 		],
 	},
@@ -72,6 +107,10 @@ const itemCategory = {
 
 export default function Navigator(props) {
 	const { onDrawerToggle, ...other } = props;
+	const features = Object.assign(getFeatures(), getMandatoryFeatures());
+	const renderCategories = categories.filter(
+		(category) => features[category.id]
+	);
 
 	return (
 		<Drawer variant="permanent" {...other}>
@@ -95,7 +134,7 @@ export default function Navigator(props) {
 					</ListItemIcon>
 					<ListItemText>Home</ListItemText>
 				</ListItemButton>
-				{categories.map(({ id, children }) => (
+				{renderCategories.map(({ id, children }) => (
 					<Box key={id} sx={{ bgcolor: "#16463F" }}>
 						<ListItem sx={{ py: 2, px: 3 }}>
 							<ListItemText sx={{ color: "#fff" }}>

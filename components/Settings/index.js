@@ -9,8 +9,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { getSettingsData } from "../../utils/storage";
 import { setSettingsData } from "../../utils/storage/settings";
+import { getSleepSettingData, setSleepSettingData } from "../../utils/storage/sleep";
 import dayjs from "dayjs";
 import { Snackbar } from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
 
 const styles = {
 	todo: {
@@ -39,15 +41,47 @@ const styles = {
 	},
 };
 
+const sleepDurationOptions = [
+	{ label: "6 Hours", id: "06:00" },
+	{ label: "6 Hours 30 minutes", id: "06:30" },
+	{ label: "7 Hours", id: "07:00" },
+	{ label: "7 Hours 30 minutes", id: "07:30" },
+	{ label: "8 Hours", id: "08:00" },
+	{ label: "8 Hours 30 minutes", id: "08:30" },
+	{ label: "9 Hours", id: "09:00" },
+];
+
+const sleepDurationToOption = (sleepDuration) => {
+	let id = dayjs
+		.duration({
+			hours: sleepDuration.hours,
+			minutes: sleepDuration.minutes,
+		})
+		.format("HH:mm");
+	return sleepDurationOptions.find((option) => option.id === id);
+};
+
+
 const Settings = () => {
 	let initialState = getSettingsData();
 	const [settings, setSettings] = useState(initialState);
 	const [open, setOpen] = useState(false);
 	const [startTime, setStartTime] = useState(initialState.dayStartTime);
+	const [endTime, setEndTime] = useState(initialState.dayEndTime);
+
+	// sleep settings data
+	const sleepSetting = getSleepSettingData();
+	const [sleepDuration, setSleepDuration] = useState(
+		sleepSetting.sleepDuration
+	);
 
 	const handleSave = () => {
-		if (settings != getSettingsData()) {
+		if (settings != getSettingsData() || sleepDuration != sleepSetting.sleepDuration) {
 			setSettingsData(settings);
+			sleepSetting.sleepDuration = sleepDuration;
+			sleepSetting.sleepStartTime = endTime;
+			sleepSetting.sleepEndTime = startTime;
+			setSleepSettingData(sleepSetting);
 			setOpen(true);
 		}
 	};
@@ -70,6 +104,28 @@ const Settings = () => {
 		setSettings(settings);
 	};
 
+	const handleEndTimeChange = (newValue) => {
+		let newEndTime = {
+			hours: newValue.hour(),
+			minutes: newValue.minute(),
+		};
+		setEndTime(newEndTime);
+		settings.dayEndTime = newEndTime;
+		setSettings(settings);
+	};
+
+	const handleSleepDurationChange = (e, newValue) => {
+		if (newValue) {
+			const dt = dayjs(newValue.id, "HH:mm");
+			let newSleepDuration = {
+				hours: dt.hour(),
+				minutes: dt.minute(),
+			};
+			setSleepDuration(newSleepDuration);
+			setSettings(settings);
+		}
+	};
+
 	return (
 		<main>
 			<Base />
@@ -87,14 +143,29 @@ const Settings = () => {
 							fontWeight: "400",
 						}}
 					>
-						App Settings
+						This is how the day looks like
 					</h1>
+					<p
+						style={{
+							marginTop: "5px",
+							textAlign: "center",
+							padding: "0 20px",
+							fontWeight: "400",
+						}}
+					>
+						<i>
+							“Practice does not make perfect. It is practice,
+							followed by a night of sleep, that leads to
+							perfection”
+						</i>
+					</p>
 					<div
 						style={{
 							paddingTop: "20px",
 							paddingLeft: "20px",
 						}}
 					>
+						<p>When do you usually wake up?</p>
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
 							<TimePicker
 								label="Day Start Time"
@@ -108,13 +179,61 @@ const Settings = () => {
 							/>
 						</LocalizationProvider>
 
+						<div
+							style={{
+								marginTop: "64px",
+							}}
+						>
+							<p>When do you usually wind up and sleep?</p>
+							<LocalizationProvider dateAdapter={AdapterDayjs}>
+								<TimePicker
+									label="Wind Up Time"
+									value={dayjs()
+										.hour(endTime.hours)
+										.minute(endTime.minutes)}
+									onChange={handleEndTimeChange}
+									renderInput={(params) => (
+										<TextField {...params} />
+									)}
+								/>
+							</LocalizationProvider>
+						</div>
+
+						<div
+							style={{
+								marginTop: "64px",
+							}}
+						>
+							<p>How many hours do you wish to sleep?</p>
+							<Autocomplete
+								disablePortal
+								id="sleep-duration"
+								value={sleepDurationToOption(
+									sleepDuration
+								)}
+								options={sleepDurationOptions}
+								sx={{ width: 240 }}
+								renderInput={(params) => (
+									<TextField
+										{...params}
+										label="Sleep Duration"
+									/>
+								)}
+								onChange={handleSleepDurationChange}
+							/>
+						</div>
+
 						<div style={{ ...styles.action }}>
 							<Button
 								type="submit"
-								variant="contained"
+								variant={open ? "contained" : "outlined"}
+								style={{
+									width: "100%",
+									marginTop: "32px",
+								}}
 								onClick={handleSave}
 							>
-								SAVE
+								UPDATE
 							</Button>
 							<Snackbar
 								open={open}

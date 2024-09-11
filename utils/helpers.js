@@ -3,15 +3,9 @@ export function renameKey(obj, oldKey, newKey) {
 	delete obj[oldKey];
 }
 
-export function fixOldDateFormat(date) {
-	if (date) {
-		let dateArr = date.split("-");
-		if (dateArr.length === 3) {
-			if (dateArr[2].length === 1) {
-				dateArr[2] = "0" + dateArr[2];
-			}
-			return dateArr.join("-");
-		}
+export function capitalize(string) {
+	if (string === null || string === undefined || string === "") {
+		return "";
 	}
-	return date;
+	return string.charAt(0).toUpperCase() + string.slice(1);
 }

@@ -4,6 +4,17 @@ import Head from "next/head";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import theme from "../src/theme";
+import {
+	setDefaultLastSleepData,
+	setSleepAuto,
+	setWakeUpAuto,
+} from "../utils/storage/sleep";
+import dayjs from "dayjs";
+
+var advancedFormat = require("dayjs/plugin/advancedFormat");
+var duration = require("dayjs/plugin/duration");
+dayjs.extend(advancedFormat);
+dayjs.extend(duration);
 
 const MyApp = ({ Component, pageProps }) => {
 	useEffect(() => {
@@ -17,12 +28,15 @@ const MyApp = ({ Component, pageProps }) => {
 		if (jssStyles) {
 			jssStyles.parentElement.removeChild(jssStyles);
 		}
+		setDefaultLastSleepData();
+		setSleepAuto();
+		setWakeUpAuto();
 	}, []);
 
 	return (
 		<>
 			<Head>
-				<title>Leben</title>
+				<title>Actualize</title>
 				<meta
 					name="viewport"
 					content="width=device-width, initial-scale=1.0"
