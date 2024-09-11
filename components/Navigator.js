@@ -15,6 +15,7 @@ import ScheduleIcon from '@mui/icons-material/Schedule';
 import PieChartIcon from "@mui/icons-material/PieChart";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
 import ContrastIcon from "@mui/icons-material/Contrast";
+import ContactSupportIcon from '@mui/icons-material/ContactSupport';
 import { downloadData } from "../utils/storage";
 import { getFeatures, getMandatoryFeatures } from "../utils/storage/settings";
 import Router from "next/router";
@@ -72,6 +73,18 @@ const categories = [
 				id: "Download Backup",
 				icon: <BackupIcon />,
 				action: downloadData,
+			},
+		],
+	},
+	{
+		id: "support",
+		children: [
+			{
+				id: "Contact Us",
+				icon: <ContactSupportIcon />,
+				action: () => {
+					Router.push("/support");
+				},
 			},
 		],
 	},

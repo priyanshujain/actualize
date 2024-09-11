@@ -13,6 +13,7 @@ import {
 import { Button } from "@mui/material";
 import { capitalize } from "../../utils/helpers";
 import UpdateSleep from "./UpdateSleep";
+import SleepQualityRating from "./SleepQuality";
 
 const styles = {
 	grid: {
@@ -289,7 +290,9 @@ const PageContent = () => {
 										marginTop: 0,
 									}}
 								>
-									{capitalize("good")}
+									{lastSleepDetails?.quality ? 
+									capitalize(SleepQualityRating[lastSleepDetails?.quality]?.short)
+								: "-"}
 								</p>
 							</div>
 						</div>

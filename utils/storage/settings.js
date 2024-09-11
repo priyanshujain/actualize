@@ -68,5 +68,6 @@ export function getFeatures() {
 export function getMandatoryFeatures() {
 	return {
 		settings: true,
+		support: true,
 	};
 }

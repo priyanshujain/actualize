@@ -290,3 +290,42 @@ export function setWakeUpAuto() {
 		setLastSleepData(sleepData);
 	}
 }
+
+export function getSleepDuration(day, sleepData) {
+	let endDt = dayjs(sleepData.endTime.timeIso);
+	let startDt = dayjs(sleepData.startTime.timeIso);
+	if (sleepData.endTime.isRecorded === false) {
+		// calculate end time from the day 
+		endDt = dayjs(day).add(1, "day");
+	}
+	if (sleepData.startTime.isRecorded === false) {
+		// calculate start time from the day
+		startDt = dayjs(day);
+	}
+	if (endDt < startDt) {
+		endDt = endDt
+			.add(1, "day");
+	}
+
+	if (!sleepData.startTime.timeIso) {
+		console.log(dayjs(day), "dayjs(day)");
+		// calculate start time from the day and add hours and minutes
+		startDt = dayjs(day)
+			.add(sleepData.startTime.hours, "hour")
+			.add(sleepData.startTime.minutes, "minute");
+	}
+
+	let val = {
+		hours: endDt.diff(startDt, "hour"),
+		minutes: endDt.diff(startDt, "minute"),
+	};
+
+	val.minutes = val.minutes - val.hours * 60;
+	console.log(val, "val");
+	console.log(startDt, "startDt");
+	console.log(endDt, "endDt");
+	return val;
+}
+
+// NOTES
+// 1. If the values are not present in the localStorage, the default values are set.

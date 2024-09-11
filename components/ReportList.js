@@ -2,7 +2,6 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import TodoItem from "./Action";
 import moment from "moment";
-import { fixOldDateFormat } from "../utils/helpers";
 
 const styles = {
 	todo: {
@@ -36,7 +35,7 @@ const ReportList = ({ data }) => {
 		.reverse()
 		.map((key) => {
 			return {
-				day: fixOldDateFormat(key),
+				day: key,
 				tasks: data["events"][key]["tasks"],
 				lastUpdated: data["events"][key]["lastUpdated"],
 				lastUpdatedDisplay: data["events"][key]["lastUpdatedDisplay"],

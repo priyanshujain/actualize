@@ -13,6 +13,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
 import { Snackbar } from "@mui/material";
+import SleepQualityRating  from "./SleepQuality";
 
 const styles = {
 	box: {
@@ -34,29 +35,6 @@ const styles = {
 	},
 };
 
-const sleepQualityRating = {
-	1: {
-		emoji: "😩",
-		description: "Barely slept, restless night (Worst)",
-	},
-	2: {
-		emoji: "😕",
-		description:
-			"Poor sleep, frequent disturbances or difficulty falling asleep",
-	},
-	3: {
-		emoji: "😐",
-		description: "Average sleep, not particularly restful",
-	},
-	4: {
-		emoji: "🙂",
-		description: "Good sleep with minor disturbances",
-	},
-	5: {
-		emoji: "😴",
-		description: "Deep, uninterrupted sleep (Best)",
-	},
-};
 
 const UpdateSleep = (props) => {
 	const { open, handleClose, sleepData, updateLastSleepData } = props;
@@ -71,6 +49,7 @@ const UpdateSleep = (props) => {
 	const handleSave = () => {
 		if (sleepDetails != sleepData) {
             sleepDetails.isRecorded = true;
+			sleepDetails.quality = selectedQuality;
 			setLastSleepData(sleepDetails);
 			setSnackBarOpen(true);
 			updateLastSleepData(sleepDetails);
@@ -182,7 +161,7 @@ const UpdateSleep = (props) => {
 							width: "100%",
 						}}
 					>
-						{Object.keys(sleepQualityRating).reverse().map((key) => (
+						{Object.keys(SleepQualityRating).reverse().map((key) => (
 							<div
                                 key={key}
 								style={{
@@ -194,11 +173,16 @@ const UpdateSleep = (props) => {
 								}}
 								onClick={() => setSelectedQuality(key)}
 							>
-								{sleepQualityRating[key]?.emoji}
+								{SleepQualityRating[key]?.emoji}
 							</div>
 						))}
 					</div>
-					<p>{sleepQualityRating[selectedQuality]?.description}</p>
+					<p
+                    style={{
+                        fontStyle: "italic",
+                        color: theme.palette.text.secondary,
+                    }}
+                    >{SleepQualityRating[selectedQuality]?.description}</p>
 				</div>
 
 				<div style={{ ...styles.action }}>
