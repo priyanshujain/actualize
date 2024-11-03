@@ -170,7 +170,7 @@ function setLatestData(data) {
 
 function downloadData() {
 	const data = JSON.stringify(getData(), null, 4);
-	const filename = "leben-backup.json";
+	const filename = "actualize-backup.json";
 	var file = new Blob([data], { type: "application/json" });
 	if (window.navigator.msSaveOrOpenBlob)
 		// IE10+
