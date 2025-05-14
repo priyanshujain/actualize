@@ -1,9 +1,9 @@
 {
-	"name": "leben",
+	"name": "actualize",
 	"private": true,
 	"version": "1.0.0",
 	"repository": {
-		"url": "https://github.com/priyanshujain/leben"
+		"url": "https://github.com/priyanshujain/actualize"
 	},
 	"engines": {
 		"node": ">=10.0.0"
