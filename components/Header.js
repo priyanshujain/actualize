@@ -31,10 +31,11 @@ function Header(props) {
 						</Grid>
 						<Grid item xs />
 						<Grid item>
-							<IconButton color="inherit">
-								<Replay
-									onClick={() => window.location.reload()}
-								/>
+							<IconButton
+								color="inherit"
+								onClick={() => window.location.reload()}
+							>
+								<Replay />
 							</IconButton>
 						</Grid>
 					</Grid>

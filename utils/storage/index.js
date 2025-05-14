@@ -1,30 +1,7 @@
 import React from "react";
-
-/*
-function GetData() {
-    const [data, setData] = useState({});
-    const retrieved = useRef(false); //To get around strict mode running the hook twice
-    useEffect(() => {
-        if (retrieved.current) return;
-        retrieved.current = true;
-        setData(getDataLocalStorage());
-    }, []);
-
-    return data || {};
-}
-
-function SetData(updatedData) {
-    const [data, setData] = useState({});
-    const retrieved = useRef(false); //To get around strict mode running the hook twice
-    useEffect(() => {
-        if (retrieved.current) return;
-        retrieved.current = true;
-        setData(setDataLocalStorage(updatedData));
-    }, []);
-
-    return data;
-}
-*/
+import dayjs from "dayjs";
+import { getSettingsData } from "./settings";
+import { renameKey } from "../helpers";
 
 function getData() {
 	return getDataLocalStorage();
@@ -43,6 +20,33 @@ function getLatestDate() {
 		return `${year}-0${month}-${day}`;
 	}
 	return `${year}-${month}-${day}`;
+}
+
+function getCurrentDate() {
+	const settings = getSettingsData();
+	const date = dayjs()
+		.add(-settings.dayStartTime.hours, "hour")
+		.add(-settings.dayStartTime.minutes, "minute");
+	const year = date.year();
+	const month = date.month() + 1;
+	const day = date.date();
+
+	const monthStr = month < 10 ? `0${month}` : month;
+	const dayStr = day < 10 ? `0${day}` : day;
+	return `${year}-${monthStr}-${dayStr}`;
+}
+
+function getOldCurrentDate() {
+	const settings = getSettingsData();
+	const date = dayjs()
+		.add(-settings.dayStartTime.hours, "hour")
+		.add(-settings.dayStartTime.minutes, "minute");
+	const year = date.year();
+	const month = date.month() + 1;
+	const day = date.date();
+
+	const monthStr = month < 10 ? `0${month}` : month;
+	return `${year}-${monthStr}-${day}`;
 }
 
 function getDataLocalStorage() {
@@ -84,7 +88,9 @@ function setSchema(tasks) {
 
 function getLatestData() {
 	var data = getData();
-	const date = getLatestDate();
+	let date = getCurrentDate();
+	const oldDate = getOldCurrentDate();
+
 	const defaultData = getSchema().map((key) => {
 		return {
 			id: key.id,
@@ -94,7 +100,16 @@ function getLatestData() {
 			lastUpdatedDisplay: "",
 		};
 	});
-	if (!data["events"][date]) {
+	let isExists = false;
+	if (data["events"].hasOwnProperty(date)) {
+		isExists = true;
+	} else if (data["events"].hasOwnProperty(oldDate)) {
+		isExists = true;
+		renameKey(data["events"], oldDate, date);
+		setData(data);
+		date = oldDate;
+	}
+	if (!isExists) {
 		data["events"][date] = {};
 		data["events"][date]["tasks"] = defaultData;
 		data["events"][date]["lastUpdated"] = new Date().toISOString();
@@ -133,7 +148,15 @@ function getLatestData() {
 
 function setLatestData(data) {
 	var db = getData();
-	const date = getLatestDate();
+	let date = getCurrentDate();
+	const oldDate = getOldCurrentDate();
+	let isExists = false;
+	if (db["events"].hasOwnProperty(date)) {
+		isExists = true;
+	} else if (db["events"].hasOwnProperty(oldDate)) {
+		isExists = true;
+		date = oldDate;
+	}
 	data["lastUpdated"] = new Date().toISOString();
 	data["lastUpdatedDisplay"] = new Date().toLocaleString();
 	if (!db["events"][date]) {
@@ -147,7 +170,7 @@ function setLatestData(data) {
 
 function downloadData() {
 	const data = JSON.stringify(getData(), null, 4);
-	const filename = "leben-backup.json";
+	const filename = "actualize-backup.json";
 	var file = new Blob([data], { type: "application/json" });
 	if (window.navigator.msSaveOrOpenBlob)
 		// IE10+
@@ -175,4 +198,6 @@ export {
 	setLatestData,
 	downloadData,
 	getData,
+	getSettingsData,
+	getCurrentDate,
 };

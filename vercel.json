@@ -1,6 +1,6 @@
 {
 	"version": 2,
-	"name": "next-simple-starter",
+	"name": "actualize",
 	"routes": [
 		{
 			"src": "^/service-worker.js$",

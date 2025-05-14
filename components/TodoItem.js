@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { createTheme } from "@mui/material/styles";
 import Fab from "@mui/material/Fab";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import theme from "../src/theme";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import moment from "moment";
+import EditGoal from "./EditGoal";
 
 const styles = {
 	todoItem: {
@@ -17,7 +19,7 @@ const styles = {
 		animationFillMode: "forwards",
 		animationDelay: "0s",
 		animationTimingFunction: "cubic-bezier(0.1, 0.23, 0.23, 1.44)",
-		"&:nth-child(even)": {
+		"&:nthChild(even)": {
 			background: "#EEF6FF",
 		},
 	},
@@ -43,6 +45,16 @@ const styles = {
 };
 
 const TodoItem = ({ todo, updateTodo, removeTodo }) => {
+	const [isEditOpen, setIsEditOpen] = useState(false);
+
+	const handleEditClose = () => {
+		setIsEditOpen(false);
+	};
+
+	const openEditModal = () => {
+		setIsEditOpen(true);
+	};
+
 	return (
 		<li style={{ ...styles.todoItem }}>
 			<div style={{ ...styles.text }}>
@@ -71,13 +83,21 @@ const TodoItem = ({ todo, updateTodo, removeTodo }) => {
 						display="block"
 						style={{ color: "black", textAlign: "left" }}
 					>
-						Added on:{" "}
+						{todo.updated ? "Updated" : "Added"} on:{" "}
 						{moment(new Date(todo.lastUpdated)).format(
 							"MMM Do, YYYY hh:mm a"
 						)}
 					</Typography>
 				</div>
 			</div>
+			<Fab
+				aria-label="Edit Todo"
+				onClick={() => openEditModal()}
+				size="small"
+				style={{ background: "#fff", marginRight: "10px" }}
+			>
+				<EditIcon htmlColor={theme.palette.primary.main} />
+			</Fab>
 			<Fab
 				aria-label="Delete Todo"
 				onClick={() => removeTodo(todo)}
@@ -86,6 +106,12 @@ const TodoItem = ({ todo, updateTodo, removeTodo }) => {
 			>
 				<DeleteIcon htmlColor="#fff" />
 			</Fab>
+			<EditGoal
+				open={isEditOpen}
+				handleClose={handleEditClose}
+				todo={todo}
+				updateTodo={updateTodo}
+			/>
 		</li>
 	);
 };

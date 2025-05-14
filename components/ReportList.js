@@ -1,9 +1,8 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import TodoItem from "./Action";
-import theme from "../src/theme";
 import moment from "moment";
+import { fixOldDateFormat } from "../utils/helpers";
 
 const styles = {
 	todo: {
@@ -32,18 +31,17 @@ const styles = {
 	},
 };
 
-const Todo = ({ data }) => {
+const ReportList = ({ data }) => {
 	const initialState = Object.keys(data["events"])
 		.reverse()
 		.map((key) => {
 			return {
-				day: key,
+				day: fixOldDateFormat(key),
 				tasks: data["events"][key]["tasks"],
 				lastUpdated: data["events"][key]["lastUpdated"],
 				lastUpdatedDisplay: data["events"][key]["lastUpdatedDisplay"],
 			};
 		});
-	console.log(initialState);
 
 	return (
 		<Grid
@@ -58,7 +56,7 @@ const Todo = ({ data }) => {
 			<div sx={{ ...styles.paper }}>
 				<ul style={{ ...styles.list }}>
 					{initialState.map((todo) => (
-						<div style={{ marginTop: "40px" }}>
+						<div style={{ marginTop: "40px" }} key={todo.day}>
 							<h2
 								style={{
 									margin: "10px 0 0 0",
@@ -101,4 +99,4 @@ const Todo = ({ data }) => {
 	);
 };
 
-export default Todo;
+export default ReportList;
